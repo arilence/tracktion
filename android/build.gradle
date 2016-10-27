@@ -23,12 +23,16 @@ android {
         instrumentTest.setRoot('tests')
     }
     defaultConfig {
+        multiDexEnabled true
         applicationId "cm.smith.games.tracktion"
-        minSdkVersion 8
+        minSdkVersion 9
         targetSdkVersion 24
     }
     buildTypes {
         release {
+            signingConfig signingConfigs.config
+        }
+        debug {
             signingConfig signingConfigs.config
         }
     }
@@ -133,4 +137,5 @@ idea {
     }
 }
 dependencies {
+    compile 'com.android.support:multidex:1.0.1'
 }

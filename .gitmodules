@@ -1,0 +1,3 @@
+[submodule "android-basic-samples"]
+	path = android-basic-samples
+	url = git@github.com:playgameservices/android-basic-samples.git
