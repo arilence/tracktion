@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import cm.smith.games.tracktion.Colors;
 import cm.smith.games.tracktion.MainGame;
 
 /**
@@ -48,7 +49,7 @@ public abstract class BaseScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(Colors.GL_CLEAR_COLOR[0], Colors.GL_CLEAR_COLOR[1], Colors.GL_CLEAR_COLOR[2], Colors.GL_CLEAR_COLOR[3]);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();

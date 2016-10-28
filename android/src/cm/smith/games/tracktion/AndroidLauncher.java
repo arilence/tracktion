@@ -45,6 +45,7 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices,
         gameHelper.setup(gameHelperListener);
 
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+        config.useImmersiveMode = true;
 		initialize(new MainGame(this), config);
 	}
 

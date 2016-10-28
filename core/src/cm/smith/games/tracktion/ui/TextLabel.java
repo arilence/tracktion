@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import cm.smith.games.tracktion.Colors;
 import cm.smith.games.tracktion.screens.BaseScreen;
@@ -16,9 +13,9 @@ import cm.smith.games.tracktion.screens.BaseScreen;
  * Created by anthony on 2016-10-27.
  */
 
-public class LabelButton extends TextButton {
+public class TextLabel extends Label {
 
-    private LabelButton(String label, TextButtonStyle style) {
+    private TextLabel(String label, Label.LabelStyle style) {
         super(label, style);
     }
 
@@ -27,10 +24,9 @@ public class LabelButton extends TextButton {
      * @param label String to display on button
      * @param size Size of the font displayed on the button
      * @param color Color of the font displayed on the button
-     * @param callback Method is called once the button is clicked
      * @return
      */
-    public static LabelButton makeButton(String label, Integer size, Color color, final Callback callback) {
+    public static TextLabel makeLabel(String label, Integer size, Color color) {
         // Generate the font sprite from font file
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Roboto-Thin.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -40,54 +36,32 @@ public class LabelButton extends TextButton {
         generator.dispose(); // don't forget to dispose to avoid memory leaks!
 
 
-        TextButtonStyle btnStyle = new TextButtonStyle();
+        Label.LabelStyle btnStyle = new Label.LabelStyle();
         //btnStyle.up = new TextureRegionDrawable(Assets.btnRectUpState);
         //btnStyle.down = new TextureRegionDrawable(Assets.btnRectDownState);
         btnStyle.font = font;
         btnStyle.font.getData().setScale(BaseScreen.SCALE_X, BaseScreen.SCALE_Y);
 
-        LabelButton tempBtn = new LabelButton(label, btnStyle);
-        tempBtn.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                callback.onClick();
-            }
-        });
-
-        return tempBtn;
+        return new TextLabel(label, btnStyle);
     }
 
     /**
      * Method that generates a text button with a custom callback function
      * @param label String to display on button
      * @param size Size of the font displayed on the button
-     * @param callback Method that is called once the button is clicked
      * @return
      */
-    public static LabelButton makeButton(String label, Integer size, final Callback callback) {
-        return LabelButton.makeButton(label, size, Colors.LIGHT_TEXT, callback);
+    public static TextLabel makeLabel(String label, Integer size) {
+        return TextLabel.makeLabel(label, size, Colors.LIGHT_TEXT);
     }
 
     /**
      * Method that generates a text button with a custom callback function
      * @param label String to display on button
-     * @param callback Method that is called once the button is clicked
      * @return
      */
-    public static LabelButton makeButton(String label, final Callback callback) {
-        return LabelButton.makeButton(label, 80, Colors.LIGHT_TEXT, callback);
-    }
-
-    /**
-     * The Callback interface.
-     *
-     * @author Anthony Smith
-     */
-    public interface Callback {
-        /**
-         * To do when button is clicked.
-         */
-        void onClick();
+    public static TextLabel makeLabel(String label) {
+        return TextLabel.makeLabel(label, 80, Colors.LIGHT_TEXT);
     }
 
 }
