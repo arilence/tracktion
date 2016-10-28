@@ -14,7 +14,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquation;
+import aurelienribon.tweenengine.TweenEquations;
+import aurelienribon.tweenengine.TweenManager;
+import aurelienribon.tweenengine.equations.Bounce;
+import aurelienribon.tweenengine.equations.Elastic;
+import aurelienribon.tweenengine.equations.Quad;
 import cm.smith.games.tracktion.MainGame;
+import cm.smith.games.tracktion.Tweens;
 import cm.smith.games.tracktion.ui.LabelButton;
 import cm.smith.games.tracktion.ui.TextLabel;
 
@@ -35,6 +44,8 @@ public class TitleScreen extends BaseScreen {
             game.playServices.signIn();
             game.playServices.connectOnline();
         }
+
+        this.tweenManager = new TweenManager();
 
         // Game Logo
         Label gameLogo = TextLabel.makeLabel("TRACKTION", 150);
@@ -81,6 +92,21 @@ public class TitleScreen extends BaseScreen {
         // Add the containers to the screen
         uiTable.add(horiGroup);
         this.uiStage.addActor(uiTable);
+
+
+        // Initial intro tween animation
+        Timeline.createSequence()
+                .beginParallel()
+                    .push(Tween.from(gameLogo, Tweens.POSITION_X, 2f) .targetRelative(-500) .ease(TweenEquations.easeInOutCubic) .delay(1f))
+                    .push(Tween.from(gameLogo, Tweens.ALPHA, 2.5f) .target(0) .ease(TweenEquations.easeInBack) .delay(0.75f))
+
+                    .push(Tween.from(driverBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(2f))
+                    .push(Tween.from(driverBtn, Tweens.ALPHA, 2.5f) .target(0) .ease(TweenEquations.easeInBack) .delay(1.5f))
+
+                    .push(Tween.from(builderBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(2.5f))
+                    .push(Tween.from(builderBtn, Tweens.ALPHA, 2.5f) .target(0) .ease(TweenEquations.easeInBack) .delay(2f))
+                .end()
+                .start(this.tweenManager);
     }
 
     @Override

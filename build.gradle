@@ -74,6 +74,7 @@ project(":android") {
         compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
         compile 'com.google.android.gms:play-services-games:9.4.0'
         compile project(':BaseGameUtils')
+        compile fileTree(dir: '../libs', include: '*.jar')
     }
 }
 
@@ -102,6 +103,7 @@ project(":core") {
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.ashley:ashley:$ashleyVersion"
+        compile fileTree(dir: '../libs', include: '*.jar')
     }
 }
 

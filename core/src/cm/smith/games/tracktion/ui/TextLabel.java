@@ -5,15 +5,18 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
+import aurelienribon.tweenengine.TweenAccessor;
 import cm.smith.games.tracktion.Colors;
+import cm.smith.games.tracktion.Tweens;
 import cm.smith.games.tracktion.screens.BaseScreen;
 
 /**
  * Created by anthony on 2016-10-27.
  */
 
-public class TextLabel extends Label {
+public class TextLabel extends Label implements TweenAccessor<Label> {
 
     private TextLabel(String label, Label.LabelStyle style) {
         super(label, style);
@@ -62,6 +65,40 @@ public class TextLabel extends Label {
      */
     public static TextLabel makeLabel(String label) {
         return TextLabel.makeLabel(label, 80, Colors.LIGHT_TEXT);
+    }
+
+    @Override
+    public int getValues(Label target, int tweenType, float[] returnValues) {
+        switch (tweenType) {
+            case Tweens.POSITION_X: returnValues[0] = target.getX(); return 1;
+            case Tweens.POSITION_Y: returnValues[0] = target.getY(); return 1;
+            case Tweens.POSITION_XY:
+                returnValues[0] = target.getX();
+                returnValues[1] = target.getY();
+                return 2;
+            case Tweens.ALPHA:
+                returnValues[0] = target.getColor().a;
+                return 1;
+            default: assert false; return -1;
+        }
+    }
+
+    @Override
+    public void setValues(Label target, int tweenType, float[] newValues) {
+        switch (tweenType) {
+            case Tweens.POSITION_X: target.setX(newValues[0]); break;
+            case Tweens.POSITION_Y: target.setY(newValues[0]); break;
+            case Tweens.POSITION_XY:
+                target.setX(newValues[0]);
+                target.setY(newValues[1]);
+                break;
+            case Tweens.ALPHA:
+                Color oldColor = target.getColor();
+                oldColor.a = newValues[0];
+                target.setColor(oldColor);
+                break;
+            default: assert false; break;
+        }
     }
 
 }

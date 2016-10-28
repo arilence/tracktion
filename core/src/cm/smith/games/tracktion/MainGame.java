@@ -2,9 +2,11 @@ package cm.smith.games.tracktion;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import cm.smith.games.tracktion.screens.LoadingScreen;
 import cm.smith.games.tracktion.screens.TitleScreen;
 
 public class MainGame extends Game {
@@ -18,6 +20,7 @@ public class MainGame extends Game {
     public SpriteBatch batch;
     public BitmapFont font;
     public PlayServices playServices;
+    public AssetManager assetManager;
 
     public MainGame(PlayServices playServices) {
         this.playServices = playServices;
@@ -27,8 +30,9 @@ public class MainGame extends Game {
 	public void create () {
         batch = new SpriteBatch();
         font = new BitmapFont();
+        assetManager = new AssetManager();
 
-        setScreen(new TitleScreen(this));
+        setScreen(new LoadingScreen(this));
 	}
 
     @Override

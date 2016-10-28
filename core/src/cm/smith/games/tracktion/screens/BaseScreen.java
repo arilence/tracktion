@@ -3,11 +3,13 @@ package cm.smith.games.tracktion.screens;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import aurelienribon.tweenengine.TweenManager;
 import cm.smith.games.tracktion.Colors;
 import cm.smith.games.tracktion.MainGame;
 
@@ -29,6 +31,7 @@ public abstract class BaseScreen implements Screen {
 
     Stage uiStage;
     Engine engine;
+    TweenManager tweenManager;
 
     public BaseScreen(MainGame game) {
         this.game = game;
@@ -36,9 +39,9 @@ public abstract class BaseScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, MainGame.VIEW_WIDTH, MainGame.VIEW_HEIGHT);
 
-        uiStage = new Stage(new ScreenViewport());
-
         engine = new Engine();
+        uiStage = new Stage(new ScreenViewport());
+        tweenManager = new TweenManager();
     }
 
     @Override
@@ -59,6 +62,8 @@ public abstract class BaseScreen implements Screen {
 
         uiStage.act();
         uiStage.draw();
+
+        tweenManager.update(delta);
     }
 
     @Override
