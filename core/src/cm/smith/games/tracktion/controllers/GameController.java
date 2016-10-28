@@ -1,4 +1,4 @@
-package cm.smith.games.tracktion;
+package cm.smith.games.tracktion.controllers;
 
 /**
  * Created by anthony on 2016-09-18.

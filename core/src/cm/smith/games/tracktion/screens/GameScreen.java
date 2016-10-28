@@ -1,8 +1,6 @@
 package cm.smith.games.tracktion.screens;
 
-import com.badlogic.gdx.Gdx;
-
-import cm.smith.games.tracktion.GameController;
+import cm.smith.games.tracktion.controllers.GameController;
 import cm.smith.games.tracktion.MainGame;
 
 /**

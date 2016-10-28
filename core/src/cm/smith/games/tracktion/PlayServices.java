@@ -10,6 +10,6 @@ public interface PlayServices
     boolean isSignedIn();
 
     void connectOnline();
-    void setGameManager(GameController game);
+    void setGameManager(cm.smith.games.tracktion.controllers.GameController game);
     void findGame(long role);
 }

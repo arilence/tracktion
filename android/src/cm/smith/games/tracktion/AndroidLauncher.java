@@ -1,10 +1,7 @@
 package cm.smith.games.tracktion;
 
 import android.content.Intent;
-import android.net.Network;
-import android.net.Uri;
 import android.os.Bundle;
-import android.view.WindowManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -22,13 +19,11 @@ import com.google.example.games.basegameutils.GameHelper;
 
 import java.util.List;
 
-import cm.smith.games.tracktion.MainGame;
-
 public class AndroidLauncher extends AndroidApplication implements PlayServices, RoomUpdateListener,
         RealTimeMessageReceivedListener, RoomStatusUpdateListener {
 
 	private GameHelper gameHelper;
-    private GameController gameController;
+    private cm.smith.games.tracktion.controllers.GameController gameController;
     final static int RC_WAITING_ROOM = 10002;
 
 	@Override
@@ -68,7 +63,7 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices,
     }
 
     @Override
-    public void setGameManager(GameController game) {
+    public void setGameManager(cm.smith.games.tracktion.controllers.GameController game) {
         this.gameController = game;
     }
 
