@@ -80,6 +80,16 @@ public class LabelButton extends TextButton implements TweenAccessor<TextButton>
         return LabelButton.makeButton(label, 80, Colors.LIGHT_TEXT, callback);
     }
 
+    /**
+     * Change the alpha of the LabelButton to either 100% or 0%
+     * @param isInvisible whether or not the LabelButton is visible or not
+     */
+    public void setInvisible(boolean isInvisible) {
+        Color tempColor = getColor();
+        tempColor.a = (isInvisible) ? 0 : 1;
+        setColor(tempColor);
+    }
+
     @Override
     public int getValues(TextButton target, int tweenType, float[] returnValues) {
         switch (tweenType) {

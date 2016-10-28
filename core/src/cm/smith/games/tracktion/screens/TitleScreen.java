@@ -48,7 +48,8 @@ public class TitleScreen extends BaseScreen {
         this.tweenManager = new TweenManager();
 
         // Game Logo
-        Label gameLogo = TextLabel.makeLabel("TRACKTION", 150);
+        TextLabel gameLogo = TextLabel.makeLabel("TRACKTION", 150);
+        gameLogo.setInvisible(true);
 
         // Play game as a driver
         LabelButton driverBtn = LabelButton.makeButton("play as driver", new LabelButton.Callback() {
@@ -57,6 +58,7 @@ public class TitleScreen extends BaseScreen {
                 TitleScreen.this.game.setScreen(new GameScreen(TitleScreen.this.game, MainGame.ROLE_DRIVER));
             }
         });
+        driverBtn.setInvisible(true);
 
         // Play game as the track builder
         LabelButton builderBtn = LabelButton.makeButton("play as builder", new LabelButton.Callback() {
@@ -65,7 +67,7 @@ public class TitleScreen extends BaseScreen {
                 TitleScreen.this.game.setScreen(new GameScreen(TitleScreen.this.game, MainGame.ROLE_BUILDER));
             }
         });
-        builderBtn.right();
+        builderBtn.setInvisible(true);
 
         // Setup UI Containers
         Table uiTable = new Table();
@@ -98,13 +100,13 @@ public class TitleScreen extends BaseScreen {
         Timeline.createSequence()
                 .beginParallel()
                     .push(Tween.from(gameLogo, Tweens.POSITION_X, 2f) .targetRelative(-500) .ease(TweenEquations.easeInOutCubic) .delay(1f))
-                    .push(Tween.from(gameLogo, Tweens.ALPHA, 2.5f) .target(0) .ease(TweenEquations.easeInBack) .delay(0.75f))
+                    .push(Tween.to(gameLogo, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(0.75f))
 
                     .push(Tween.from(driverBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(2f))
-                    .push(Tween.from(driverBtn, Tweens.ALPHA, 2.5f) .target(0) .ease(TweenEquations.easeInBack) .delay(1.5f))
+                    .push(Tween.to(driverBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1.5f))
 
                     .push(Tween.from(builderBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(2.5f))
-                    .push(Tween.from(builderBtn, Tweens.ALPHA, 2.5f) .target(0) .ease(TweenEquations.easeInBack) .delay(2f))
+                    .push(Tween.to(builderBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(2f))
                 .end()
                 .start(this.tweenManager);
     }

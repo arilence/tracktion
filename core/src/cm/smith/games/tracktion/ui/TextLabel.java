@@ -67,6 +67,16 @@ public class TextLabel extends Label implements TweenAccessor<Label> {
         return TextLabel.makeLabel(label, 80, Colors.LIGHT_TEXT);
     }
 
+    /**
+     * Change the alpha of the TextLabel to either 100% or 0%
+     * @param isInvisible whether or not the TextLabel is visible or not
+     */
+    public void setInvisible(boolean isInvisible) {
+        Color tempColor = getColor();
+        tempColor.a = (isInvisible) ? 0 : 1;
+        setColor(tempColor);
+    }
+
     @Override
     public int getValues(Label target, int tweenType, float[] returnValues) {
         switch (tweenType) {
