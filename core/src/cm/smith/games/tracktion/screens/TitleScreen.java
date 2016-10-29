@@ -162,20 +162,15 @@ public class TitleScreen extends BaseScreen {
     }
 
     public void transitionOutScreen(final BaseScreen screen) {
-        Timeline.createSequence()
+        Timeline tl = Timeline.createSequence()
                 .beginParallel()
                 .push(Tween.to(gameLogo, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInOutCubic))
                 .push(Tween.to(driverBtn, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInOutCubic))
                 .push(Tween.to(builderBtn, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInOutCubic))
                 .push(Tween.to(helpBtn, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInOutCubic))
                 .push(Tween.to(settingsBtn, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInOutCubic))
-                .end()
-                .setCallback(new TweenCallback() {
-                    @Override
-                    public void onEvent(int type, BaseTween<?> source) {
-                        TitleScreen.this.game.setScreen(screen);
-                    }
-                })
-                .start(this.tweenManager);
+                .end();
+
+        this.transitionOut(tl, screen);
     }
 }

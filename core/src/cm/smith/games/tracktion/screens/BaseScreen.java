@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import aurelienribon.tweenengine.BaseTween;
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 import cm.smith.games.tracktion.Colors;
 import cm.smith.games.tracktion.MainGame;
@@ -89,6 +92,16 @@ public abstract class BaseScreen implements Screen {
     @Override
     public void dispose() {
         uiStage.dispose();
+    }
+
+    public void transitionOut(final Timeline timeline, final BaseScreen newScreen) {
+        timeline.setCallback(new TweenCallback() {
+                    @Override
+                    public void onEvent(int type, BaseTween<?> source) {
+                        game.setScreen(newScreen);
+                    }
+                })
+                .start(tweenManager);
     }
 
     public void playServicesLogin(){
