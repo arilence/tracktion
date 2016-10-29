@@ -66,10 +66,10 @@ public class TitleScreen extends BaseScreen {
 
     private void setupUiElements() {
         // Game Logo
-        gameLogo = TextLabel.makeLabel("TRACKTION", 150);
+        gameLogo = TextLabel.makeLabel(this.game, "TRACKTION", 150);
         gameLogo.setInvisible(true);
 
-        driverBtn = LabelButton.makeButton("play as driver", new LabelButton.Callback() {
+        driverBtn = LabelButton.makeButton(this.game, "play as driver", new LabelButton.Callback() {
             @Override
             public void onClick() {
                 TitleScreen.this.transitionOutScreen(new GameScreen(TitleScreen.this.game, MainGame.ROLE_DRIVER));
@@ -77,7 +77,7 @@ public class TitleScreen extends BaseScreen {
         });
         driverBtn.setInvisible(true);
 
-        builderBtn = LabelButton.makeButton("play as builder", new LabelButton.Callback() {
+        builderBtn = LabelButton.makeButton(this.game, "play as builder", new LabelButton.Callback() {
             @Override
             public void onClick() {
                 TitleScreen.this.transitionOutScreen(new GameScreen(TitleScreen.this.game, MainGame.ROLE_BUILDER));
@@ -85,7 +85,7 @@ public class TitleScreen extends BaseScreen {
         });
         builderBtn.setInvisible(true);
 
-        settingsBtn = LabelButton.makeButton("settings", 60, new LabelButton.Callback() {
+        settingsBtn = LabelButton.makeButton(this.game, "settings", 60, new LabelButton.Callback() {
             @Override
             public void onClick() {
                 //TitleScreen.this.transitionOutScreen(new GameScreen(TitleScreen.this.game, MainGame.ROLE_BUILDER));
@@ -93,10 +93,10 @@ public class TitleScreen extends BaseScreen {
         });
         settingsBtn.setInvisible(true);
 
-        helpBtn = LabelButton.makeButton("help", 60, new LabelButton.Callback() {
+        helpBtn = LabelButton.makeButton(this.game, "help", 60, new LabelButton.Callback() {
             @Override
             public void onClick() {
-                //TitleScreen.this.transitionOutScreen(new GameScreen(TitleScreen.this.game, MainGame.ROLE_BUILDER));
+                TitleScreen.this.transitionOutScreen(new HelpScreen(TitleScreen.this.game));
             }
         });
         helpBtn.setInvisible(true);
@@ -130,7 +130,7 @@ public class TitleScreen extends BaseScreen {
         bottomTable.setFillParent(true);
 
         bottomTable.add(helpBtn).padRight(40 * SCALE_X).padBottom(20 * SCALE_Y);
-        bottomTable.add(settingsBtn).padRight(40 * SCALE_X).padBottom(20 * SCALE_Y);
+        bottomTable.add(settingsBtn).padRight(20 * SCALE_X).padBottom(20 * SCALE_Y);
 
         Stack stack = new Stack();
         stack.setFillParent(true);
@@ -145,18 +145,18 @@ public class TitleScreen extends BaseScreen {
         // Initial intro tween animation
         Timeline.createSequence()
                 .beginParallel()
-                .push(Tween.from(gameLogo, Tweens.POSITION_X, 2f) .targetRelative(-500) .ease(TweenEquations.easeInOutCubic) .delay(1f))
-                .push(Tween.to(gameLogo, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(0.75f))
+                .push(Tween.from(gameLogo, Tweens.POSITION_X, 2f) .targetRelative(-500) .ease(TweenEquations.easeInOutCubic) .delay(0.5f))
+                .push(Tween.to(gameLogo, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(0.25f))
 
-                .push(Tween.from(driverBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(2f))
-                .push(Tween.to(driverBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1.5f))
+                .push(Tween.from(driverBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(1.5f))
+                .push(Tween.to(driverBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1f))
 
-                .push(Tween.from(builderBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(2.5f))
-                .push(Tween.to(builderBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(2f))
+                .push(Tween.from(builderBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(2f))
+                .push(Tween.to(builderBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1.5f))
 
-                .push(Tween.to(helpBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(2f))
+                .push(Tween.to(helpBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1.5f))
 
-                .push(Tween.to(settingsBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(2f))
+                .push(Tween.to(settingsBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1.5f))
                 .end()
                 .start(this.tweenManager);
     }
@@ -164,11 +164,11 @@ public class TitleScreen extends BaseScreen {
     public void transitionOutScreen(final BaseScreen screen) {
         Timeline tl = Timeline.createSequence()
                 .beginParallel()
-                .push(Tween.to(gameLogo, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInOutCubic))
-                .push(Tween.to(driverBtn, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInOutCubic))
-                .push(Tween.to(builderBtn, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInOutCubic))
-                .push(Tween.to(helpBtn, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInOutCubic))
-                .push(Tween.to(settingsBtn, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInOutCubic))
+                .push(Tween.to(gameLogo, Tweens.ALPHA, 0.5f) .target(0) .ease(TweenEquations.easeOutCubic))
+                .push(Tween.to(driverBtn, Tweens.ALPHA, 0.5f) .target(0) .ease(TweenEquations.easeOutCubic))
+                .push(Tween.to(builderBtn, Tweens.ALPHA, 0.5f) .target(0) .ease(TweenEquations.easeOutCubic))
+                .push(Tween.to(helpBtn, Tweens.ALPHA, 0.5f) .target(0) .ease(TweenEquations.easeOutCubic))
+                .push(Tween.to(settingsBtn, Tweens.ALPHA, 0.5f) .target(0) .ease(TweenEquations.easeOutCubic))
                 .end();
 
         this.transitionOut(tl, screen);

@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import cm.smith.games.tracktion.MainGame;
@@ -21,8 +23,6 @@ import cm.smith.games.tracktion.ui.TextLabel;
 
 public class LoadingScreen extends BaseScreen {
 
-    TextLabel loadingProgress;
-
     public LoadingScreen(final MainGame game) {
         super(game);
     }
@@ -30,15 +30,6 @@ public class LoadingScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
-
-        Table uiTable = new Table();
-        uiTable.setFillParent(true);
-
-        loadingProgress = TextLabel.makeLabel("Loading: ", 80);
-
-        uiTable.add(loadingProgress);
-
-        uiStage.addActor(uiTable);
 
         loadTextures();
         loadFonts();
@@ -55,7 +46,9 @@ public class LoadingScreen extends BaseScreen {
 
         // display loading information
         float progress = game.assetManager.getProgress();
-        loadingProgress.setText("Loading: " + (int)(progress*100) + "%");
+        this.game.batch.begin();
+        this.game.font.draw(this.game.batch, "Loading: " + (int)(progress*100) + "%", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight());
+        this.game.batch.end();
     }
 
     private void loadTextures() {
@@ -68,10 +61,22 @@ public class LoadingScreen extends BaseScreen {
         game.assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         game.assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
-        FreetypeFontLoader.FreeTypeFontLoaderParameter parameter = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        parameter.fontFileName = "Roboto-Thin.ttf";
-        parameter.fontParameters.size = 50;
-        parameter.fontParameters.color = Color.WHITE;
-        game.assetManager.load("font50.ttf", BitmapFont.class, parameter);
+        FreetypeFontLoader.FreeTypeFontLoaderParameter parameter60 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        parameter60.fontFileName = "Roboto-Thin.ttf";
+        parameter60.fontParameters.size = 60;
+        parameter60.fontParameters.color = Color.WHITE;
+        game.assetManager.load("font60.ttf", BitmapFont.class, parameter60);
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter parameter80 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        parameter80.fontFileName = "Roboto-Thin.ttf";
+        parameter80.fontParameters.size = 80;
+        parameter80.fontParameters.color = Color.WHITE;
+        game.assetManager.load("font80.ttf", BitmapFont.class, parameter80);
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter parameter150 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        parameter150.fontFileName = "Roboto-Thin.ttf";
+        parameter150.fontParameters.size = 150;
+        parameter150.fontParameters.color = Color.WHITE;
+        game.assetManager.load("font150.ttf", BitmapFont.class, parameter150);
     }
 }

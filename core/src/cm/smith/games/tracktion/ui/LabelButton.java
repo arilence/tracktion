@@ -3,6 +3,7 @@ package cm.smith.games.tracktion.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import aurelienribon.tweenengine.TweenAccessor;
 import cm.smith.games.tracktion.Colors;
+import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.Tweens;
 import cm.smith.games.tracktion.screens.BaseScreen;
 
@@ -32,15 +34,8 @@ public class LabelButton extends TextButton implements TweenAccessor<TextButton>
      * @param callback Method is called once the button is clicked
      * @return
      */
-    public static LabelButton makeButton(String label, Integer size, Color color, final Callback callback) {
-        // Generate the font sprite from font file
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Roboto-Thin.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = size;
-        parameter.color = color;
-        BitmapFont font = generator.generateFont(parameter);
-        generator.dispose(); // don't forget to dispose to avoid memory leaks!
-
+    public static LabelButton makeButton(MainGame game, String label, Integer size, Color color, final Callback callback) {
+        BitmapFont font = game.assetManager.get("font" + size + ".ttf", BitmapFont.class);
 
         TextButtonStyle btnStyle = new TextButtonStyle();
         //btnStyle.up = new TextureRegionDrawable(Assets.btnRectUpState);
@@ -66,8 +61,8 @@ public class LabelButton extends TextButton implements TweenAccessor<TextButton>
      * @param callback Method that is called once the button is clicked
      * @return
      */
-    public static LabelButton makeButton(String label, Integer size, final Callback callback) {
-        return LabelButton.makeButton(label, size, Colors.LIGHT_TEXT, callback);
+    public static LabelButton makeButton(MainGame game, String label, Integer size, final Callback callback) {
+        return LabelButton.makeButton(game, label, size, Colors.LIGHT_TEXT, callback);
     }
 
     /**
@@ -76,8 +71,8 @@ public class LabelButton extends TextButton implements TweenAccessor<TextButton>
      * @param callback Method that is called once the button is clicked
      * @return
      */
-    public static LabelButton makeButton(String label, final Callback callback) {
-        return LabelButton.makeButton(label, 80, Colors.LIGHT_TEXT, callback);
+    public static LabelButton makeButton(MainGame game, String label, final Callback callback) {
+        return LabelButton.makeButton(game, label, 80, Colors.LIGHT_TEXT, callback);
     }
 
     /**

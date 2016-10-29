@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 import aurelienribon.tweenengine.TweenAccessor;
 import cm.smith.games.tracktion.Colors;
+import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.Tweens;
 import cm.smith.games.tracktion.screens.BaseScreen;
 
@@ -29,15 +30,8 @@ public class TextLabel extends Label implements TweenAccessor<Label> {
      * @param color Color of the font displayed on the button
      * @return
      */
-    public static TextLabel makeLabel(String label, Integer size, Color color) {
-        // Generate the font sprite from font file
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Roboto-Thin.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = size;
-        parameter.color = color;
-        BitmapFont font = generator.generateFont(parameter);
-        generator.dispose(); // don't forget to dispose to avoid memory leaks!
-
+    public static TextLabel makeLabel(MainGame game, String label, Integer size, Color color) {
+        BitmapFont font = game.assetManager.get("font" + size + ".ttf", BitmapFont.class);
 
         Label.LabelStyle btnStyle = new Label.LabelStyle();
         //btnStyle.up = new TextureRegionDrawable(Assets.btnRectUpState);
@@ -54,8 +48,8 @@ public class TextLabel extends Label implements TweenAccessor<Label> {
      * @param size Size of the font displayed on the button
      * @return
      */
-    public static TextLabel makeLabel(String label, Integer size) {
-        return TextLabel.makeLabel(label, size, Colors.LIGHT_TEXT);
+    public static TextLabel makeLabel(MainGame game, String label, Integer size) {
+        return TextLabel.makeLabel(game, label, size, Colors.LIGHT_TEXT);
     }
 
     /**
@@ -63,8 +57,8 @@ public class TextLabel extends Label implements TweenAccessor<Label> {
      * @param label String to display on button
      * @return
      */
-    public static TextLabel makeLabel(String label) {
-        return TextLabel.makeLabel(label, 80, Colors.LIGHT_TEXT);
+    public static TextLabel makeLabel(MainGame game, String label) {
+        return TextLabel.makeLabel(game, label, 80, Colors.LIGHT_TEXT);
     }
 
     /**
