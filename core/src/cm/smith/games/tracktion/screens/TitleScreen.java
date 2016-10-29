@@ -9,13 +9,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
+import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenEquation;
 import aurelienribon.tweenengine.TweenEquations;
 import aurelienribon.tweenengine.TweenManager;
@@ -32,6 +35,12 @@ import cm.smith.games.tracktion.ui.TextLabel;
  */
 public class TitleScreen extends BaseScreen {
 
+    TextLabel gameLogo;
+    LabelButton driverBtn;
+    LabelButton builderBtn;
+    LabelButton settingsBtn;
+    LabelButton helpBtn;
+
     public TitleScreen(final MainGame game) {
         super(game);
     }
@@ -45,37 +54,59 @@ public class TitleScreen extends BaseScreen {
             game.playServices.connectOnline();
         }
 
-        this.tweenManager = new TweenManager();
+        setupUiElements();
+        configureUiContainers();
+        transitionIntoScreen();
+    }
 
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+    }
+
+    private void setupUiElements() {
         // Game Logo
-        TextLabel gameLogo = TextLabel.makeLabel("TRACKTION", 150);
+        gameLogo = TextLabel.makeLabel("TRACKTION", 150);
         gameLogo.setInvisible(true);
 
-        // Play game as a driver
-        LabelButton driverBtn = LabelButton.makeButton("play as driver", new LabelButton.Callback() {
+        driverBtn = LabelButton.makeButton("play as driver", new LabelButton.Callback() {
             @Override
             public void onClick() {
-                TitleScreen.this.game.setScreen(new GameScreen(TitleScreen.this.game, MainGame.ROLE_DRIVER));
+                TitleScreen.this.transitionOutScreen(new GameScreen(TitleScreen.this.game, MainGame.ROLE_DRIVER));
             }
         });
         driverBtn.setInvisible(true);
 
-        // Play game as the track builder
-        LabelButton builderBtn = LabelButton.makeButton("play as builder", new LabelButton.Callback() {
+        builderBtn = LabelButton.makeButton("play as builder", new LabelButton.Callback() {
             @Override
             public void onClick() {
-                TitleScreen.this.game.setScreen(new GameScreen(TitleScreen.this.game, MainGame.ROLE_BUILDER));
+                TitleScreen.this.transitionOutScreen(new GameScreen(TitleScreen.this.game, MainGame.ROLE_BUILDER));
             }
         });
         builderBtn.setInvisible(true);
 
-        // Setup UI Containers
-        Table uiTable = new Table();
-        uiTable.setFillParent(true);
-        HorizontalGroup horiGroup = new HorizontalGroup();
-        Table buttonTable = new Table();
+        settingsBtn = LabelButton.makeButton("settings", 60, new LabelButton.Callback() {
+            @Override
+            public void onClick() {
+                //TitleScreen.this.transitionOutScreen(new GameScreen(TitleScreen.this.game, MainGame.ROLE_BUILDER));
+            }
+        });
+        settingsBtn.setInvisible(true);
 
-        // Add elements to the containers
+        helpBtn = LabelButton.makeButton("help", 60, new LabelButton.Callback() {
+            @Override
+            public void onClick() {
+                //TitleScreen.this.transitionOutScreen(new GameScreen(TitleScreen.this.game, MainGame.ROLE_BUILDER));
+            }
+        });
+        helpBtn.setInvisible(true);
+    }
+
+    private void configureUiContainers() {
+        //uiStage.setDebugAll(true);
+
+        // Configure the two play buttons
+        Table buttonTable = new Table();
         buttonTable.padBottom(100f * BaseScreen.SCALE_Y)
                 .add(driverBtn)
                 .size(512 * SCALE_X, 110 * SCALE_Y)
@@ -88,31 +119,63 @@ public class TitleScreen extends BaseScreen {
                 .width(MainGame.VIEW_WIDTH / 2)
                 .align(Align.right);
 
-        horiGroup.addActor(gameLogo);
-        horiGroup.addActor(buttonTable);
+        // Place game logo and two play buttons side by side
+        Table horGroup = new Table();
+        horGroup.add(gameLogo);
+        horGroup.columnDefaults(2);
+        horGroup.add(buttonTable);
 
-        // Add the containers to the screen
-        uiTable.add(horiGroup);
-        this.uiStage.addActor(uiTable);
+        // Add the settings button to the bottom right of the screen
+        Table bottomTable = new Table();
+        bottomTable.setFillParent(true);
 
+        bottomTable.add(helpBtn).padRight(40 * SCALE_X).padBottom(20 * SCALE_Y);
+        bottomTable.add(settingsBtn).padRight(40 * SCALE_X).padBottom(20 * SCALE_Y);
 
+        Stack stack = new Stack();
+        stack.setFillParent(true);
+
+        // Piece it all together into awesomeness
+        stack.add(horGroup);
+        stack.add(bottomTable.bottom().right());
+        this.uiStage.addActor(stack);
+    }
+
+    private void transitionIntoScreen() {
         // Initial intro tween animation
         Timeline.createSequence()
                 .beginParallel()
-                    .push(Tween.from(gameLogo, Tweens.POSITION_X, 2f) .targetRelative(-500) .ease(TweenEquations.easeInOutCubic) .delay(1f))
-                    .push(Tween.to(gameLogo, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(0.75f))
+                .push(Tween.from(gameLogo, Tweens.POSITION_X, 2f) .targetRelative(-500) .ease(TweenEquations.easeInOutCubic) .delay(1f))
+                .push(Tween.to(gameLogo, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(0.75f))
 
-                    .push(Tween.from(driverBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(2f))
-                    .push(Tween.to(driverBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1.5f))
+                .push(Tween.from(driverBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(2f))
+                .push(Tween.to(driverBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1.5f))
 
-                    .push(Tween.from(builderBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(2.5f))
-                    .push(Tween.to(builderBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(2f))
+                .push(Tween.from(builderBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(2.5f))
+                .push(Tween.to(builderBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(2f))
+
+                .push(Tween.to(helpBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(2f))
+
+                .push(Tween.to(settingsBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(2f))
                 .end()
                 .start(this.tweenManager);
     }
 
-    @Override
-    public void render(float delta) {
-        super.render(delta);
+    public void transitionOutScreen(final BaseScreen screen) {
+        Timeline.createSequence()
+                .beginParallel()
+                .push(Tween.to(gameLogo, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInOutCubic))
+                .push(Tween.to(driverBtn, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInOutCubic))
+                .push(Tween.to(builderBtn, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInOutCubic))
+                .push(Tween.to(helpBtn, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInOutCubic))
+                .push(Tween.to(settingsBtn, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInOutCubic))
+                .end()
+                .setCallback(new TweenCallback() {
+                    @Override
+                    public void onEvent(int type, BaseTween<?> source) {
+                        TitleScreen.this.game.setScreen(screen);
+                    }
+                })
+                .start(this.tweenManager);
     }
 }

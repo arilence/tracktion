@@ -14,6 +14,11 @@ public class GameScreen extends BaseScreen {
     public GameScreen(MainGame game, long role) {
         super(game);
         this.role = role;
+    }
+
+    @Override
+    public void show() {
+        super.show();
 
         gameController = new GameController();
         game.playServices.setGameManager(gameController);
@@ -25,7 +30,6 @@ public class GameScreen extends BaseScreen {
         game.playServices.connectOnline();
         game.playServices.findGame(role);
     }
-
 
     @Override
     public void render(float delta) {
