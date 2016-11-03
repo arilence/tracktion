@@ -70,7 +70,7 @@ public class LabelButton extends TextButton implements TweenAccessor<TextButton>
      * @return
      */
     public static LabelButton makeButton(MainGame game, String label, final Callback callback) {
-        return LabelButton.makeButton(game, label, 80, Colors.LIGHT_TEXT, callback);
+        return LabelButton.makeButton(game, label, 40, Colors.LIGHT_TEXT, callback);
     }
 
     /**

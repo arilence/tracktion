@@ -58,7 +58,7 @@ public class TextLabel extends Label implements TweenAccessor<Label> {
      * @return
      */
     public static TextLabel makeLabel(MainGame game, String label) {
-        return TextLabel.makeLabel(game, label, 80, Colors.LIGHT_TEXT);
+        return TextLabel.makeLabel(game, label, 40, Colors.LIGHT_TEXT);
     }
 
     /**

@@ -1,14 +1,17 @@
 package cm.smith.games.tracktion.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.sun.prism.impl.BaseGraphics;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
 import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.Tweens;
+import cm.smith.games.tracktion.storage.Settings;
 import cm.smith.games.tracktion.ui.LabelButton;
 import cm.smith.games.tracktion.ui.TextLabel;
 import cm.smith.games.tracktion.ui.UISlider;
@@ -18,6 +21,8 @@ import cm.smith.games.tracktion.ui.UISlider;
  */
 
 public class SettingsScreen extends BaseScreen {
+
+    Settings settingsController;
 
     LabelButton backButton;
 
@@ -37,11 +42,12 @@ public class SettingsScreen extends BaseScreen {
     public void show() {
         super.show();
 
-        //uiStage.setDebugAll(true);
+        settingsController = this.game.settings;
 
-        backButton = LabelButton.makeButton(this.game, "< Back", 60, new LabelButton.Callback() {
+        backButton = LabelButton.makeButton(this.game, "< Back", 30, new LabelButton.Callback() {
             @Override
             public void onClick() {
+                settingsController.saveSettings();
                 SettingsScreen.this.transitionOutScreen(new TitleScreen(SettingsScreen.this.game));
             }
         });
@@ -54,30 +60,50 @@ public class SettingsScreen extends BaseScreen {
         sensLabel = TextLabel.makeLabel(this.game, "Turn Sensitivity");
         sensLabel.setInvisible(true);
 
-        effectsSlider = UISlider.makeSlider(this.game, 0, 100, 10, false);
-        effectsSlider.setValue(50);
+        effectsSlider = UISlider.makeSlider(this.game, 0, 100, 1, false);
+        effectsSlider.setValue(this.settingsController.getEffectsLevel());
         effectsSlider.setInvisible(true);
-        musicSlider = UISlider.makeSlider(this.game, 0, 100, 10, false);
-        musicSlider.setValue(50);
+        effectsSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                settingsController.setEffectsLevel(effectsSlider.getValue());
+            }
+        });
+
+        musicSlider = UISlider.makeSlider(this.game, 0, 100, 1, false);
+        musicSlider.setValue(this.settingsController.getMusicLevel());
         musicSlider.setInvisible(true);
-        sensSlider = UISlider.makeSlider(this.game, 0, 100, 10, false);
-        sensSlider.setValue(50);
+        musicSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                settingsController.setMusicLevel(musicSlider.getValue());
+            }
+        });
+
+        sensSlider = UISlider.makeSlider(this.game, 0, 100, 1, false);
+        sensSlider.setValue(this.settingsController.getTurnSensitivity());
         sensSlider.setInvisible(true);
+        sensSlider.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                settingsController.setTurnSensitivity(sensSlider.getValue());
+            }
+        });
 
         Table buttonTable = new Table();
         buttonTable.add(backButton).padLeft(20 * SCALE_X).padTop(20 * SCALE_Y);
         buttonTable.setFillParent(true);
 
         Table settingsTable = new Table();
-        settingsTable.add(effectsLabel).padBottom(20 * SCALE_Y).center().left();
+        settingsTable.add(effectsLabel).padBottom(20 * SCALE_Y).center().left().padRight(20 * SCALE_X);
         settingsTable.add(effectsSlider).width(500 * SCALE_X).height(60 * SCALE_Y).center().right().padBottom(20 * SCALE_Y);
         settingsTable.row();
 
-        settingsTable.add(musicLabel).padBottom(20 * SCALE_Y).center().left();
+        settingsTable.add(musicLabel).padBottom(20 * SCALE_Y).center().left().padRight(20 * SCALE_X);
         settingsTable.add(musicSlider).width(500 * SCALE_X).height(60 * SCALE_Y).center().right().padBottom(20 * SCALE_Y);
         settingsTable.row();
 
-        settingsTable.add(sensLabel);
+        settingsTable.add(sensLabel).padRight(20 * SCALE_X);
         settingsTable.add(sensSlider).width(500 * SCALE_X).height(60 * SCALE_Y).center().right();
 
         Stack stack = new Stack();
@@ -97,14 +123,14 @@ public class SettingsScreen extends BaseScreen {
                 .push(Tween.from(backButton, Tweens.POSITION_X, 1f) .targetRelative(-500) .ease(TweenEquations.easeInOutCubic) .delay(0.5f))
                 .push(Tween.to(backButton, Tweens.ALPHA, 1.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(0.25f))
 
-                .push(Tween.to(effectsLabel, Tweens.ALPHA, 1f) .target(1) .ease(TweenEquations.easeInBack))
-                .push(Tween.to(effectsSlider, Tweens.ALPHA, 1f) .target(1) .ease(TweenEquations.easeInBack))
+                .push(Tween.to(effectsLabel, Tweens.ALPHA, 1f) .target(1) .ease(TweenEquations.easeInOutCubic))
+                .push(Tween.to(effectsSlider, Tweens.ALPHA, 1f) .target(1) .ease(TweenEquations.easeInOutCubic))
 
-                .push(Tween.to(musicLabel, Tweens.ALPHA, 1f) .target(1) .ease(TweenEquations.easeInBack))
-                .push(Tween.to(musicSlider, Tweens.ALPHA, 1f) .target(1) .ease(TweenEquations.easeInBack))
+                .push(Tween.to(musicLabel, Tweens.ALPHA, 1f) .target(1) .ease(TweenEquations.easeInOutCubic))
+                .push(Tween.to(musicSlider, Tweens.ALPHA, 1f) .target(1) .ease(TweenEquations.easeInOutCubic))
 
-                .push(Tween.to(sensLabel, Tweens.ALPHA, 1f) .target(1) .ease(TweenEquations.easeInBack))
-                .push(Tween.to(sensSlider, Tweens.ALPHA, 1f) .target(1) .ease(TweenEquations.easeInBack))
+                .push(Tween.to(sensLabel, Tweens.ALPHA, 1f) .target(1) .ease(TweenEquations.easeInOutCubic))
+                .push(Tween.to(sensSlider, Tweens.ALPHA, 1f) .target(1) .ease(TweenEquations.easeInOutCubic))
 
                 .end()
                 .start(this.tweenManager);

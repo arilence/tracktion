@@ -40,7 +40,7 @@ public class HelpScreen extends BaseScreen {
         driverTextVisible = true;
         animationFinished = true;
 
-        backButton = LabelButton.makeButton(this.game, "< Back", 60, new LabelButton.Callback() {
+        backButton = LabelButton.makeButton(this.game, "< Back", 30, new LabelButton.Callback() {
             @Override
             public void onClick() {
                 HelpScreen.this.transitionOutScreen(new TitleScreen(HelpScreen.this.game));
@@ -48,7 +48,7 @@ public class HelpScreen extends BaseScreen {
         });
         backButton.setInvisible(true);
 
-        changeHelpButton = LabelButton.makeButton(this.game, "Builder Help >", 60, new LabelButton.Callback() {
+        changeHelpButton = LabelButton.makeButton(this.game, "Builder Help >", 30, new LabelButton.Callback() {
             @Override
             public void onClick() {
                 HelpScreen.this.toggleHelp();

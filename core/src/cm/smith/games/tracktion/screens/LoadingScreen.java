@@ -1,7 +1,6 @@
 package cm.smith.games.tracktion.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Color;
@@ -10,13 +9,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import cm.smith.games.tracktion.LocalStorage;
 import cm.smith.games.tracktion.MainGame;
-import cm.smith.games.tracktion.ui.TextLabel;
 
 /**
  * Created by anthony on 2016-10-28.
@@ -41,8 +35,7 @@ public class LoadingScreen extends BaseScreen {
         super.render(delta);
 
         if(game.assetManager != null && game.assetManager.update()) {
-            // load the game settings
-            LocalStorage.loadSettings();
+            this.game.settings.loadSettings();
 
             // we are done loading, let's move to another screen!
             this.game.setScreen(new TitleScreen(this.game));
@@ -66,22 +59,22 @@ public class LoadingScreen extends BaseScreen {
         game.assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
         game.assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
-        FreetypeFontLoader.FreeTypeFontLoaderParameter parameter60 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        parameter60.fontFileName = "Roboto-Thin.ttf";
-        parameter60.fontParameters.size = 60;
-        parameter60.fontParameters.color = Color.WHITE;
-        game.assetManager.load("font60.ttf", BitmapFont.class, parameter60);
+        FreetypeFontLoader.FreeTypeFontLoaderParameter parameter30 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        parameter30.fontFileName = "Roboto-Thin.ttf";
+        parameter30.fontParameters.size = (int)(30 * (BaseScreen.SCALE_X));
+        parameter30.fontParameters.color = Color.WHITE;
+        game.assetManager.load("font30.ttf", BitmapFont.class, parameter30);
 
-        FreetypeFontLoader.FreeTypeFontLoaderParameter parameter80 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        parameter80.fontFileName = "Roboto-Thin.ttf";
-        parameter80.fontParameters.size = 80;
-        parameter80.fontParameters.color = Color.WHITE;
-        game.assetManager.load("font80.ttf", BitmapFont.class, parameter80);
+        FreetypeFontLoader.FreeTypeFontLoaderParameter parameter40 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        parameter40.fontFileName = "Roboto-Thin.ttf";
+        parameter40.fontParameters.size = (int)(40 * (BaseScreen.SCALE_X));
+        parameter40.fontParameters.color = Color.WHITE;
+        game.assetManager.load("font40.ttf", BitmapFont.class, parameter40);
 
-        FreetypeFontLoader.FreeTypeFontLoaderParameter parameter150 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        parameter150.fontFileName = "Roboto-Thin.ttf";
-        parameter150.fontParameters.size = 150;
-        parameter150.fontParameters.color = Color.WHITE;
-        game.assetManager.load("font150.ttf", BitmapFont.class, parameter150);
+        FreetypeFontLoader.FreeTypeFontLoaderParameter parameter75 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        parameter75.fontFileName = "Roboto-Thin.ttf";
+        parameter75.fontParameters.size = (int)(75 * (BaseScreen.SCALE_X));
+        parameter75.fontParameters.color = Color.WHITE;
+        game.assetManager.load("font75.ttf", BitmapFont.class, parameter75);
     }
 }

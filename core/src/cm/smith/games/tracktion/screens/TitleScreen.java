@@ -49,10 +49,10 @@ public class TitleScreen extends BaseScreen {
     public void show() {
         super.show();
 
-        if (!game.playServices.isSignedIn()) {
-            game.playServices.signIn();
-            game.playServices.connectOnline();
-        }
+//        if (!game.playServices.isSignedIn()) {
+//            game.playServices.signIn();
+//            game.playServices.connectOnline();
+//        }
 
         setupUiElements();
         configureUiContainers();
@@ -66,7 +66,7 @@ public class TitleScreen extends BaseScreen {
 
     private void setupUiElements() {
         // Game Logo
-        gameLogo = TextLabel.makeLabel(this.game, "TRACKTION", 150);
+        gameLogo = TextLabel.makeLabel(this.game, "TRACKTION", 75);
         gameLogo.setInvisible(true);
 
         driverBtn = LabelButton.makeButton(this.game, "play as driver", new LabelButton.Callback() {
@@ -85,7 +85,7 @@ public class TitleScreen extends BaseScreen {
         });
         builderBtn.setInvisible(true);
 
-        settingsBtn = LabelButton.makeButton(this.game, "settings", 60, new LabelButton.Callback() {
+        settingsBtn = LabelButton.makeButton(this.game, "settings", 30, new LabelButton.Callback() {
             @Override
             public void onClick() {
                 TitleScreen.this.transitionOutScreen(new SettingsScreen(TitleScreen.this.game));
@@ -93,7 +93,7 @@ public class TitleScreen extends BaseScreen {
         });
         settingsBtn.setInvisible(true);
 
-        helpBtn = LabelButton.makeButton(this.game, "help", 60, new LabelButton.Callback() {
+        helpBtn = LabelButton.makeButton(this.game, "help", 30, new LabelButton.Callback() {
             @Override
             public void onClick() {
                 TitleScreen.this.transitionOutScreen(new HelpScreen(TitleScreen.this.game));
