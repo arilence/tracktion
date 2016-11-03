@@ -38,8 +38,6 @@ public class LabelButton extends TextButton implements TweenAccessor<TextButton>
         BitmapFont font = game.assetManager.get("font" + size + ".ttf", BitmapFont.class);
 
         TextButtonStyle btnStyle = new TextButtonStyle();
-        //btnStyle.up = new TextureRegionDrawable(Assets.btnRectUpState);
-        //btnStyle.down = new TextureRegionDrawable(Assets.btnRectDownState);
         btnStyle.font = font;
         btnStyle.font.getData().setScale(BaseScreen.SCALE_X, BaseScreen.SCALE_Y);
 

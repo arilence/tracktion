@@ -88,7 +88,7 @@ public class TitleScreen extends BaseScreen {
         settingsBtn = LabelButton.makeButton(this.game, "settings", 60, new LabelButton.Callback() {
             @Override
             public void onClick() {
-                //TitleScreen.this.transitionOutScreen(new GameScreen(TitleScreen.this.game, MainGame.ROLE_BUILDER));
+                TitleScreen.this.transitionOutScreen(new SettingsScreen(TitleScreen.this.game));
             }
         });
         settingsBtn.setInvisible(true);

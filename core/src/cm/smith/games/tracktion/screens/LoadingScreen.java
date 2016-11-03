@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import cm.smith.games.tracktion.LocalStorage;
 import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.ui.TextLabel;
 
@@ -40,6 +41,9 @@ public class LoadingScreen extends BaseScreen {
         super.render(delta);
 
         if(game.assetManager != null && game.assetManager.update()) {
+            // load the game settings
+            LocalStorage.loadSettings();
+
             // we are done loading, let's move to another screen!
             this.game.setScreen(new TitleScreen(this.game));
         }
@@ -47,12 +51,13 @@ public class LoadingScreen extends BaseScreen {
         // display loading information
         float progress = game.assetManager.getProgress();
         this.game.batch.begin();
-        this.game.font.draw(this.game.batch, "Loading: " + (int)(progress*100) + "%", Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight());
+        this.game.font.draw(this.game.batch, "Loading: " + (int)(progress*100) + "%", ((Gdx.graphics.getWidth() / SCALE_X) / 2) - 50, ((Gdx.graphics.getHeight() / SCALE_Y) / 2) + 5);
         this.game.batch.end();
     }
 
     private void loadTextures() {
         game.assetManager.load("badlogic.jpg", Texture.class);
+        game.assetManager.load("uislider.png", Texture.class);
     }
 
     private void loadFonts() {
