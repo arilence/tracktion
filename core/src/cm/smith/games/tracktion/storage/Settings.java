@@ -24,13 +24,13 @@ public class Settings {
      */
     public static HashMap<String, Object> VALUES = new HashMap<String, Object>();
     static {
-        VALUES.put(Settings.SETTINGS_EFFECTS_LEVEL, 100f);
-        VALUES.put(Settings.SETTINGS_MUSIC_LEVEL, 100);
-        VALUES.put(Settings.SETTINGS_TURN_SENS, 50f);
+        VALUES.put(Settings.SETTINGS_EFFECTS_LEVEL, 1.0f);
+        VALUES.put(Settings.SETTINGS_MUSIC_LEVEL, 1.0f);
+        VALUES.put(Settings.SETTINGS_TURN_SENS, 0.5f);
     }
 
     public void setEffectsLevel(float newValue) {
-        if (newValue >= 0 && newValue <= 100)
+        if (newValue >= 0 && newValue <= 1.0f)
             VALUES.put(Settings.SETTINGS_EFFECTS_LEVEL, newValue);
     }
 
@@ -39,7 +39,7 @@ public class Settings {
     }
 
     public void setMusicLevel(float newValue) {
-        if (newValue >= 0 && newValue <= 100)
+        if (newValue >= 0 && newValue <= 1.0f)
             VALUES.put(Settings.SETTINGS_MUSIC_LEVEL, newValue);
     }
 
@@ -48,8 +48,8 @@ public class Settings {
     }
 
     public void setTurnSensitivity(float newValue) {
-        if (newValue >= 0 && newValue <= 100)
-            VALUES.put(Settings.SETTINGS_TURN_SENS, newValue);
+        if (newValue >= 0 && newValue <= 1.0f)
+            VALUES.put(Settings.SETTINGS_TURN_SENS, (Float)newValue);
     }
 
     public float getTurnSensitivity() {

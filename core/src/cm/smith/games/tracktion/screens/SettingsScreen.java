@@ -43,6 +43,7 @@ public class SettingsScreen extends BaseScreen {
         super.show();
 
         settingsController = this.game.settings;
+        settingsController.loadSettings();
 
         backButton = LabelButton.makeButton(this.game, "< Back", 30, new LabelButton.Callback() {
             @Override
@@ -60,7 +61,7 @@ public class SettingsScreen extends BaseScreen {
         sensLabel = TextLabel.makeLabel(this.game, "Turn Sensitivity");
         sensLabel.setInvisible(true);
 
-        effectsSlider = UISlider.makeSlider(this.game, 0, 100, 1, false);
+        effectsSlider = UISlider.makeSlider(this.game, 0, 1, 0.1f, false);
         effectsSlider.setValue(this.settingsController.getEffectsLevel());
         effectsSlider.setInvisible(true);
         effectsSlider.addListener(new ChangeListener() {
@@ -70,7 +71,7 @@ public class SettingsScreen extends BaseScreen {
             }
         });
 
-        musicSlider = UISlider.makeSlider(this.game, 0, 100, 1, false);
+        musicSlider = UISlider.makeSlider(this.game, 0, 1, 0.1f, false);
         musicSlider.setValue(this.settingsController.getMusicLevel());
         musicSlider.setInvisible(true);
         musicSlider.addListener(new ChangeListener() {
@@ -80,7 +81,7 @@ public class SettingsScreen extends BaseScreen {
             }
         });
 
-        sensSlider = UISlider.makeSlider(this.game, 0, 100, 1, false);
+        sensSlider = UISlider.makeSlider(this.game, 0, 1, 0.1f, false);
         sensSlider.setValue(this.settingsController.getTurnSensitivity());
         sensSlider.setInvisible(true);
         sensSlider.addListener(new ChangeListener() {
