@@ -34,21 +34,5 @@ public class GameScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-
-        String roleName = "UNKNOWN";
-        if (role == MainGame.ROLE_DRIVER)
-            roleName = "Driver";
-        if (role == MainGame.ROLE_BUILDER)
-            roleName = "Builder";
-
-//        if (gameController.isPlaying) {
-//            game.batch.begin();
-//            game.font.draw(game.batch, "You are the " + roleName, 150, 200);
-//            game.batch.end();
-//        }
-//        if (gameController.shouldLeave) {
-//            game.setScreen(new TitleScreen(this.game));
-//            dispose();
-//        }
     }
 }
