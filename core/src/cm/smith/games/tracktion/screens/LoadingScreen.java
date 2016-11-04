@@ -47,7 +47,6 @@ public class LoadingScreen extends BaseScreen {
     }
 
     private void loadTextures() {
-        game.assetManager.load("badlogic.jpg", Texture.class);
         game.assetManager.load("uislider.png", Texture.class);
     }
 
