@@ -1,4 +1,4 @@
-package cm.smith.games.tracktion.entities;
+package cm.smith.games.tracktion.entity_framework.entities;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
@@ -22,5 +22,21 @@ public class Vehicle extends Entity {
         public float x = 0.0f;
         public float y = 0.0f;
         public float direction = 0.0f;
+    }
+
+    public void rightInput() {
+
+    }
+
+    public void leftInput() {
+
+    }
+
+    public void accelerator() {
+
+    }
+
+    public void brake() {
+
     }
 }

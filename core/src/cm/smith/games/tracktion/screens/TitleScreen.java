@@ -27,6 +27,7 @@ import aurelienribon.tweenengine.equations.Elastic;
 import aurelienribon.tweenengine.equations.Quad;
 import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.Tweens;
+import cm.smith.games.tracktion.controllers.GameController;
 import cm.smith.games.tracktion.ui.LabelButton;
 import cm.smith.games.tracktion.ui.TextLabel;
 
@@ -72,7 +73,7 @@ public class TitleScreen extends BaseScreen {
         driverBtn = LabelButton.makeButton(this.game, "play as driver", new LabelButton.Callback() {
             @Override
             public void onClick() {
-                TitleScreen.this.transitionOutScreen(new GameScreen(TitleScreen.this.game, MainGame.ROLE_DRIVER));
+                TitleScreen.this.transitionOutScreen(new TestGameScreen(TitleScreen.this.game, GameController.ROLE.DRIVER));
             }
         });
         driverBtn.setInvisible(true);
@@ -80,7 +81,7 @@ public class TitleScreen extends BaseScreen {
         builderBtn = LabelButton.makeButton(this.game, "play as builder", new LabelButton.Callback() {
             @Override
             public void onClick() {
-                TitleScreen.this.transitionOutScreen(new GameScreen(TitleScreen.this.game, MainGame.ROLE_BUILDER));
+                TitleScreen.this.transitionOutScreen(new TestGameScreen(TitleScreen.this.game, GameController.ROLE.BUILDER));
             }
         });
         builderBtn.setInvisible(true);

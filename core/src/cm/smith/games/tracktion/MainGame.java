@@ -14,8 +14,6 @@ public class MainGame extends Game {
     public static final String GAME_TITLE = "Tracktion";
 	public static final int VIEW_WIDTH = 1280;
 	public static final int VIEW_HEIGHT = 720;
-    public static final long ROLE_DRIVER = 0x1; // 001 in binary
-    public static final long ROLE_BUILDER = 0x2; // 010 in binary
 
     public SpriteBatch batch;
     public BitmapFont font;
