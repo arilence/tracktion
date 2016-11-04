@@ -41,14 +41,14 @@ public class GameScreen extends BaseScreen {
         if (role == MainGame.ROLE_BUILDER)
             roleName = "Builder";
 
-        if (gameController.isPlaying) {
-            game.batch.begin();
-            game.font.draw(game.batch, "You are the " + roleName, 150, 200);
-            game.batch.end();
-        }
-        if (gameController.shouldLeave) {
-            game.setScreen(new TitleScreen(this.game));
-            dispose();
-        }
+//        if (gameController.isPlaying) {
+//            game.batch.begin();
+//            game.font.draw(game.batch, "You are the " + roleName, 150, 200);
+//            game.batch.end();
+//        }
+//        if (gameController.shouldLeave) {
+//            game.setScreen(new TitleScreen(this.game));
+//            dispose();
+//        }
     }
 }

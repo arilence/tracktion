@@ -5,29 +5,21 @@ package cm.smith.games.tracktion.controllers;
  */
 public class GameController {
 
-    public boolean isPlaying;
-    public boolean shouldLeave;
+    public enum STATE {
+        START_COUNTDOWN,
+        PLAYING,
+        DEAD_COUNTDOWN,
+        GAME_OVER_COUNTDOWN
+    }
+
+    private STATE currentState;
 
     public GameController() {
-        isPlaying = false;
-        shouldLeave = false;
+        currentState = STATE.START_COUNTDOWN;
     }
 
-    public void startGame() {
-        if (!isGameRunning()) {
-            isPlaying = true;
-        }
-    }
-
-    public void stopGame() {
-        if (isGameRunning()) {
-            isPlaying = false;
-            shouldLeave = true;
-        }
-    }
-
-    public boolean isGameRunning() {
-        return isPlaying;
+    public STATE getState() {
+        return this.currentState;
     }
 
 }
