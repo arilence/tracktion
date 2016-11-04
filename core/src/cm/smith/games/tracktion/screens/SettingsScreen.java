@@ -1,6 +1,5 @@
 package cm.smith.games.tracktion.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -22,7 +21,7 @@ import cm.smith.games.tracktion.ui.UISlider;
 
 public class SettingsScreen extends BaseScreen {
 
-    Settings settingsController;
+    Settings settings;
 
     LabelButton backButton;
 
@@ -42,13 +41,13 @@ public class SettingsScreen extends BaseScreen {
     public void show() {
         super.show();
 
-        settingsController = this.game.settings;
-        settingsController.loadSettings();
+        settings = new Settings();
+        settings.loadSettings();
 
         backButton = LabelButton.makeButton(this.game, "< Back", 30, new LabelButton.Callback() {
             @Override
             public void onClick() {
-                settingsController.saveSettings();
+                settings.saveSettings();
                 SettingsScreen.this.transitionOutScreen(new TitleScreen(SettingsScreen.this.game));
             }
         });
@@ -62,32 +61,34 @@ public class SettingsScreen extends BaseScreen {
         sensLabel.setInvisible(true);
 
         effectsSlider = UISlider.makeSlider(this.game, 0, 1, 0.1f, false);
-        effectsSlider.setValue(this.settingsController.getEffectsLevel());
+        effectsSlider.setValue(this.settings.getEffectsLevel());
         effectsSlider.setInvisible(true);
         effectsSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                settingsController.setEffectsLevel(effectsSlider.getValue());
+                settings.setEffectsLevel(effectsSlider.getValue());
+                // TODO: live update the sound
             }
         });
 
         musicSlider = UISlider.makeSlider(this.game, 0, 1, 0.1f, false);
-        musicSlider.setValue(this.settingsController.getMusicLevel());
+        musicSlider.setValue(this.settings.getMusicLevel());
         musicSlider.setInvisible(true);
         musicSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                settingsController.setMusicLevel(musicSlider.getValue());
+                settings.setMusicLevel(musicSlider.getValue());
+                // TODO: live update the sound
             }
         });
 
         sensSlider = UISlider.makeSlider(this.game, 0, 1, 0.1f, false);
-        sensSlider.setValue(this.settingsController.getTurnSensitivity());
+        sensSlider.setValue(this.settings.getTurnSensitivity());
         sensSlider.setInvisible(true);
         sensSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                settingsController.setTurnSensitivity(sensSlider.getValue());
+                settings.setTurnSensitivity(sensSlider.getValue());
             }
         });
 

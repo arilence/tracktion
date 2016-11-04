@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import cm.smith.games.tracktion.screens.LoadingScreen;
-import cm.smith.games.tracktion.screens.TitleScreen;
 import cm.smith.games.tracktion.storage.Settings;
 
 public class MainGame extends Game {
@@ -22,7 +21,6 @@ public class MainGame extends Game {
     public BitmapFont font;
     public PlayServices playServices;
     public AssetManager assetManager;
-    public Settings settings;
 
     public MainGame(PlayServices playServices) {
         this.playServices = playServices;
@@ -33,7 +31,6 @@ public class MainGame extends Game {
         batch = new SpriteBatch();
         font = new BitmapFont();
         assetManager = new AssetManager();
-        settings = new Settings();
 
         setScreen(new LoadingScreen(this));
 	}

@@ -35,8 +35,6 @@ public class LoadingScreen extends BaseScreen {
         super.render(delta);
 
         if(game.assetManager != null && game.assetManager.update()) {
-            this.game.settings.loadSettings();
-
             // we are done loading, let's move to another screen!
             this.game.setScreen(new TitleScreen(this.game));
         }
