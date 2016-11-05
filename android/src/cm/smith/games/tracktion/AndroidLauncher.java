@@ -77,17 +77,17 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices,
                 if (responseCode == RESULT_OK) {
                     // ready to start playing
                     Gdx.app.log("Multiplayer", "Starting game (waiting room returned OK).");
-                    gameController.startGame();
+                    // TODO: start game here
                 } else if (responseCode == GamesActivityResultCodes.RESULT_LEFT_ROOM) {
                     // player indicated that they want to leave the room
                     Gdx.app.log("Multiplayer", "Left Room");
-                    gameController.stopGame();
+                    // TODO: stop game here
                 } else if (responseCode == RESULT_CANCELED) {
                     // Dialog was cancelled (user pressed back key, for instance). In our game,
                     // this means leaving the room too. In more elaborate games, this could mean
                     // something else (like minimizing the waiting room UI).
                     Gdx.app.log("Multiplayer", "Canceled Room");
-                    gameController.stopGame();
+                    // TODO: stop game here
                 }
                 break;
         }
@@ -248,7 +248,7 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices,
     public void onDisconnectedFromRoom(Room room) {
         Gdx.app.log("Multiplayer", "onDisconnectedFromRoom");
 
-        gameController.stopGame();
+        // TODO: player left, stop game
     }
 
     @Override
@@ -260,7 +260,7 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices,
     public void onPeersDisconnected(Room room, List<String> list) {
         Gdx.app.log("Multiplayer", "onPeersDiconnected");
 
-        gameController.stopGame();
+        // TODO: player left, stop game
     }
 
     @Override
@@ -272,6 +272,6 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices,
     public void onP2PDisconnected(String s) {
         Gdx.app.log("Multiplayer", "onP2PDisconnected");
 
-        gameController.stopGame();
+        // TODO: player left, stop game
     }
 }
