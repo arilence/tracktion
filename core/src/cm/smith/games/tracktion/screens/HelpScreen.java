@@ -12,7 +12,7 @@ import aurelienribon.tweenengine.TweenEquations;
 import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.Tweens;
 import cm.smith.games.tracktion.ui.LabelButton;
-import cm.smith.games.tracktion.ui.TextLabel;
+import cm.smith.games.tracktion.ui.UILabel;
 
 /**
  * Created by anthony on 2016-10-26.
@@ -26,8 +26,8 @@ public class HelpScreen extends BaseScreen {
     LabelButton backButton;
     LabelButton changeHelpButton;
 
-    TextLabel driverText;
-    TextLabel builderText;
+    UILabel driverText;
+    UILabel builderText;
 
     public HelpScreen(MainGame game) {
         super(game);
@@ -56,7 +56,7 @@ public class HelpScreen extends BaseScreen {
         });
         changeHelpButton.setInvisible(true);
 
-        driverText = TextLabel.makeLabel(this.game,
+        driverText = UILabel.makeLabel(this.game,
                 "As Driver\n" +
                         "Your goals are simple:\n" +
                         "- Move as far away from the start position to gain points\n" +
@@ -65,7 +65,7 @@ public class HelpScreen extends BaseScreen {
         );
         driverText.setInvisible(true);
 
-        builderText = TextLabel.makeLabel(this.game,
+        builderText = UILabel.makeLabel(this.game,
                 "As Builder\n" +
                         "Your goals are simple:\n" +
                         "- Build a path for the driver to move along\n"

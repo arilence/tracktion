@@ -1,42 +1,24 @@
 package cm.smith.games.tracktion.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
-import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
-import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
-import aurelienribon.tweenengine.TweenEquation;
 import aurelienribon.tweenengine.TweenEquations;
-import aurelienribon.tweenengine.TweenManager;
-import aurelienribon.tweenengine.equations.Bounce;
-import aurelienribon.tweenengine.equations.Elastic;
-import aurelienribon.tweenengine.equations.Quad;
 import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.Tweens;
 import cm.smith.games.tracktion.controllers.GameController;
 import cm.smith.games.tracktion.ui.LabelButton;
-import cm.smith.games.tracktion.ui.TextLabel;
+import cm.smith.games.tracktion.ui.UILabel;
 
 /**
  * Created by anthony on 2016-09-16.
  */
 public class TitleScreen extends BaseScreen {
 
-    TextLabel gameLogo;
+    UILabel gameLogo;
     LabelButton driverBtn;
     LabelButton builderBtn;
     LabelButton settingsBtn;
@@ -67,7 +49,7 @@ public class TitleScreen extends BaseScreen {
 
     private void setupUiElements() {
         // Game Logo
-        gameLogo = TextLabel.makeLabel(this.game, "TRACKTION", 75);
+        gameLogo = UILabel.makeLabel(this.game, "TRACKTION", 75);
         gameLogo.setInvisible(true);
 
         driverBtn = LabelButton.makeButton(this.game, "play as driver", new LabelButton.Callback() {

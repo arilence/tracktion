@@ -12,7 +12,7 @@ import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.Tweens;
 import cm.smith.games.tracktion.storage.Settings;
 import cm.smith.games.tracktion.ui.LabelButton;
-import cm.smith.games.tracktion.ui.TextLabel;
+import cm.smith.games.tracktion.ui.UILabel;
 import cm.smith.games.tracktion.ui.UISlider;
 
 /**
@@ -25,9 +25,9 @@ public class SettingsScreen extends BaseScreen {
 
     LabelButton backButton;
 
-    TextLabel effectsLabel;
-    TextLabel musicLabel;
-    TextLabel sensLabel;
+    UILabel effectsLabel;
+    UILabel musicLabel;
+    UILabel sensLabel;
 
     UISlider effectsSlider;
     UISlider musicSlider;
@@ -53,11 +53,11 @@ public class SettingsScreen extends BaseScreen {
         });
         backButton.setInvisible(true);
 
-        effectsLabel = TextLabel.makeLabel(this.game, "Effects Level");
+        effectsLabel = UILabel.makeLabel(this.game, "Effects Level");
         effectsLabel.setInvisible(true);
-        musicLabel = TextLabel.makeLabel(this.game, "Music Level");
+        musicLabel = UILabel.makeLabel(this.game, "Music Level");
         musicLabel.setInvisible(true);
-        sensLabel = TextLabel.makeLabel(this.game, "Turn Sensitivity");
+        sensLabel = UILabel.makeLabel(this.game, "Turn Sensitivity");
         sensLabel.setInvisible(true);
 
         effectsSlider = UISlider.makeSlider(this.game, 0, 1, 0.1f, false);

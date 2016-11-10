@@ -1,11 +1,8 @@
 package cm.smith.games.tracktion.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 import aurelienribon.tweenengine.TweenAccessor;
 import cm.smith.games.tracktion.Colors;
@@ -17,9 +14,9 @@ import cm.smith.games.tracktion.screens.BaseScreen;
  * Created by anthony on 2016-10-27.
  */
 
-public class TextLabel extends Label implements TweenAccessor<Label> {
+public class UILabel extends Label implements TweenAccessor<Label> {
 
-    private TextLabel(String label, Label.LabelStyle style) {
+    private UILabel(String label, Label.LabelStyle style) {
         super(label, style);
     }
 
@@ -30,7 +27,7 @@ public class TextLabel extends Label implements TweenAccessor<Label> {
      * @param color Color of the font displayed on the button
      * @return
      */
-    public static TextLabel makeLabel(MainGame game, String label, Integer size, Color color) {
+    public static UILabel makeLabel(MainGame game, String label, Integer size, Color color) {
         BitmapFont font = game.assetManager.get("font" + size + ".ttf", BitmapFont.class);
 
         Label.LabelStyle btnStyle = new Label.LabelStyle();
@@ -39,7 +36,7 @@ public class TextLabel extends Label implements TweenAccessor<Label> {
         btnStyle.font = font;
         btnStyle.font.getData().setScale(BaseScreen.SCALE_X, BaseScreen.SCALE_Y);
 
-        return new TextLabel(label, btnStyle);
+        return new UILabel(label, btnStyle);
     }
 
     /**
@@ -48,8 +45,8 @@ public class TextLabel extends Label implements TweenAccessor<Label> {
      * @param size Size of the font displayed on the button
      * @return
      */
-    public static TextLabel makeLabel(MainGame game, String label, Integer size) {
-        return TextLabel.makeLabel(game, label, size, Colors.LIGHT_TEXT);
+    public static UILabel makeLabel(MainGame game, String label, Integer size) {
+        return UILabel.makeLabel(game, label, size, Colors.LIGHT_TEXT);
     }
 
     /**
@@ -57,13 +54,13 @@ public class TextLabel extends Label implements TweenAccessor<Label> {
      * @param label String to display on button
      * @return
      */
-    public static TextLabel makeLabel(MainGame game, String label) {
-        return TextLabel.makeLabel(game, label, 40, Colors.LIGHT_TEXT);
+    public static UILabel makeLabel(MainGame game, String label) {
+        return UILabel.makeLabel(game, label, 40, Colors.LIGHT_TEXT);
     }
 
     /**
-     * Change the alpha of the TextLabel to either 100% or 0%
-     * @param isInvisible whether or not the TextLabel is visible or not
+     * Change the alpha of the UILabel to either 100% or 0%
+     * @param isInvisible whether or not the UILabel is visible or not
      */
     public void setInvisible(boolean isInvisible) {
         Color tempColor = getColor();
