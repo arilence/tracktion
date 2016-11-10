@@ -23,6 +23,7 @@ public class TitleScreen extends BaseScreen {
     LabelButton builderBtn;
     LabelButton settingsBtn;
     LabelButton helpBtn;
+    LabelButton achievementsButton;
 
     public TitleScreen(final MainGame game) {
         super(game);
@@ -55,7 +56,12 @@ public class TitleScreen extends BaseScreen {
         driverBtn = LabelButton.makeButton(this.game, "play as driver", new LabelButton.Callback() {
             @Override
             public void onClick() {
-                TitleScreen.this.transitionOutScreen(new TestGameScreen(TitleScreen.this.game, GameController.ROLE.DRIVER));
+                // try to initiate finding a game
+                if (!game.playServices.isSignedIn()) {
+                    game.playServices.signIn();
+                }
+                game.playServices.connectOnline();
+                game.playServices.findGame(GameController.ROLE.DRIVER.getValue());
             }
         });
         driverBtn.setInvisible(true);
@@ -83,11 +89,17 @@ public class TitleScreen extends BaseScreen {
             }
         });
         helpBtn.setInvisible(true);
+
+        achievementsButton = LabelButton.makeButton(this.game, "achievements", 30, new LabelButton.Callback() {
+            @Override
+            public void onClick() {
+                TitleScreen.this.game.playServices.showAchievements();
+            }
+        });
+        achievementsButton.setInvisible(true);
     }
 
     private void configureUiContainers() {
-        //uiStage.setDebugAll(true);
-
         // Configure the two play buttons
         Table buttonTable = new Table();
         buttonTable.padBottom(100f * BaseScreen.SCALE_Y)
@@ -115,12 +127,18 @@ public class TitleScreen extends BaseScreen {
         bottomTable.add(helpBtn).padRight(40 * SCALE_X).padBottom(20 * SCALE_Y);
         bottomTable.add(settingsBtn).padRight(20 * SCALE_X).padBottom(20 * SCALE_Y);
 
+        Table achievementTable = new Table();
+        achievementTable.setFillParent(true);
+
+        achievementTable.add(achievementsButton.padLeft(40 * SCALE_X).padBottom(20 * SCALE_Y));
+
         Stack stack = new Stack();
         stack.setFillParent(true);
 
         // Piece it all together into awesomeness
         stack.add(horGroup);
         stack.add(bottomTable.bottom().right());
+        stack.add(achievementTable.bottom().left());
         this.uiStage.addActor(stack);
     }
 
@@ -140,6 +158,8 @@ public class TitleScreen extends BaseScreen {
                 .push(Tween.to(helpBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1.5f))
 
                 .push(Tween.to(settingsBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1.5f))
+
+                .push(Tween.to(achievementsButton, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1.5f))
                 .end()
                 .start(this.tweenManager);
     }
@@ -152,6 +172,7 @@ public class TitleScreen extends BaseScreen {
                 .push(Tween.to(builderBtn, Tweens.ALPHA, 0.5f) .target(0) .ease(TweenEquations.easeOutCubic))
                 .push(Tween.to(helpBtn, Tweens.ALPHA, 0.5f) .target(0) .ease(TweenEquations.easeOutCubic))
                 .push(Tween.to(settingsBtn, Tweens.ALPHA, 0.5f) .target(0) .ease(TweenEquations.easeOutCubic))
+                .push(Tween.to(achievementsButton, Tweens.ALPHA, 0.5f) .target(0) .ease(TweenEquations.easeOutCubic))
                 .end();
 
         this.transitionOut(tl, screen);

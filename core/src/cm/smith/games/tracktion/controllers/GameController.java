@@ -5,9 +5,6 @@ package cm.smith.games.tracktion.controllers;
  */
 public class GameController {
 
-    public static final long ROLE_DRIVER = 0x1; // 001 in binary
-    public static final long ROLE_BUILDER = 0x2; // 010 in binary
-
     public enum ROLE {
         DRIVER(0x1),
         BUILDER(0x2);
@@ -34,6 +31,8 @@ public class GameController {
     public void setRole(ROLE role) {
         this.currentRole = role;
     }
+
+    public ROLE getRole() { return this.currentRole; }
 
     public STATE getState() {
         return this.currentState;

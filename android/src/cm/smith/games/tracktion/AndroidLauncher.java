@@ -25,6 +25,7 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices,
 	private GameHelper gameHelper;
     private cm.smith.games.tracktion.controllers.GameController gameController;
     final static int RC_WAITING_ROOM = 10002;
+    private final static int REQUEST_ACHIEVEMENTS = 9003;
 
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
@@ -164,6 +165,12 @@ public class AndroidLauncher extends AndroidApplication implements PlayServices,
             // create room:
             Games.RealTimeMultiplayer.create(gameHelper.getApiClient(), rtmConfigBuilder.build());
         }
+    }
+
+    @Override
+    public void showAchievements() {
+        if (isSignedIn())
+            startActivityForResult(Games.Achievements.getAchievementsIntent(gameHelper.getApiClient()), REQUEST_ACHIEVEMENTS);
     }
 
     @Override
