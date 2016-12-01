@@ -37,6 +37,7 @@ public class TestGameScreen extends BaseScreen {
         // TODO: setup map world
 
         hud = new Hud(this.game);
+        hud.setupBaseHud();
         if (gameController.getRole() == GameController.ROLE.DRIVER) {
             hud.setupDriverHud();
         }
@@ -55,6 +56,21 @@ public class TestGameScreen extends BaseScreen {
     public void render(float delta) {
         super.render(delta);
 
+        switch(gameController.getState()) {
+            case PRE_GAME:
+                break;
+
+            case PLAYING:
+                updatePlaying();
+                break;
+
+            case DEAD:
+                break;
+
+            case GAME_OVER:
+                break;
+        }
+
         if (Gdx.input.isTouched()) {
             this.camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
 
@@ -69,6 +85,9 @@ public class TestGameScreen extends BaseScreen {
 //            }
         }
 
+    }
+
+    public void updatePlaying() {
         if (hud.isLeftDown) {
             Gdx.app.log("VEHICLE", "LEFT");
         }
@@ -78,10 +97,5 @@ public class TestGameScreen extends BaseScreen {
         if (hud.isAccelerateDown) {
             Gdx.app.log("VEHICLE", "ACCELERATE");
         }
-
-    }
-
-    private void setupControlsUI() {
-
     }
 }

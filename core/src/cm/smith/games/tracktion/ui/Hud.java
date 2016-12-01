@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 
 import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.controllers.GameController;
@@ -25,6 +26,10 @@ public class Hud extends Stack {
     public boolean isRightDown;
     public boolean isAccelerateDown;
 
+    // Generic HUD
+    private UILabel timeRemaining;
+
+    // Driver HUD
     public UIImageButton turnLeftButton;
     public UIImageButton turnRightButton;
     public UIImageButton accelerateButton;
@@ -35,6 +40,16 @@ public class Hud extends Stack {
         isAccelerateDown = false;
 
         this.game = game;
+    }
+
+    public void setupBaseHud() {
+        timeRemaining = UILabel.makeLabel(this.game, "00:00.00", 75);
+
+        Table timeTable = new Table();
+        timeTable.setFillParent(true);
+
+        timeTable.add(timeRemaining).top().right();
+        add(timeTable);
     }
 
     public void setupDriverHud() {
@@ -92,7 +107,7 @@ public class Hud extends Stack {
 
         Table gearbox = new Table();
         gearbox.setFillParent(true);
-        gearbox.add(accelerateButton.padRight(80 * BaseScreen.SCALE_X).padBottom(85 * BaseScreen.SCALE_Y));
+        gearbox.add(accelerateButton.padRight(80 * BaseScreen.SCALE_X).padBottom(90 * BaseScreen.SCALE_Y));
 
         setFillParent(true);
         add(turningTable.bottom().left());

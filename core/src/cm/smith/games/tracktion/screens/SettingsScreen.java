@@ -122,8 +122,8 @@ public class SettingsScreen extends BaseScreen {
         // Initial intro tween animation
         Timeline.createSequence()
                 .beginParallel()
-                .push(Tween.from(backButton, Tweens.POSITION_X, 1f) .targetRelative(-500) .ease(TweenEquations.easeInOutCubic) .delay(0.5f))
-                .push(Tween.to(backButton, Tweens.ALPHA, 1.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(0.25f))
+                .push(Tween.from(backButton, Tweens.POSITION_X, 1f) .targetRelative(-500) .ease(TweenEquations.easeInOutCubic) .delay(0.25f))
+                .push(Tween.to(backButton, Tweens.ALPHA, 1.5f) .target(1) .ease(TweenEquations.easeInBack))
 
                 .push(Tween.to(effectsLabel, Tweens.ALPHA, 1f) .target(1) .ease(TweenEquations.easeInOutCubic))
                 .push(Tween.to(effectsSlider, Tweens.ALPHA, 1f) .target(1) .ease(TweenEquations.easeInOutCubic))

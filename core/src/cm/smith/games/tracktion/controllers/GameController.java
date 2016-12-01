@@ -15,17 +15,17 @@ public class GameController {
     }
 
     public enum STATE {
-        START_COUNTDOWN,
+        PRE_GAME,
         PLAYING,
-        DEAD_COUNTDOWN,
-        GAME_OVER_COUNTDOWN
+        DEAD,
+        GAME_OVER
     }
 
     private STATE currentState;
     private ROLE currentRole;
 
     public GameController() {
-        currentState = STATE.START_COUNTDOWN;
+        currentState = STATE.PRE_GAME;
     }
 
     public void setRole(ROLE role) {

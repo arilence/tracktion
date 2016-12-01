@@ -56,12 +56,7 @@ public class TitleScreen extends BaseScreen {
         driverBtn = LabelButton.makeButton(this.game, "play as driver", new LabelButton.Callback() {
             @Override
             public void onClick() {
-                // try to initiate finding a game
-                if (!game.playServices.isSignedIn()) {
-                    game.playServices.signIn();
-                }
-                game.playServices.connectOnline();
-                game.playServices.findGame(GameController.ROLE.DRIVER.getValue());
+                TitleScreen.this.transitionOutScreen(new TestGameScreen(TitleScreen.this.game, GameController.ROLE.DRIVER));
             }
         });
         driverBtn.setInvisible(true);
@@ -69,7 +64,12 @@ public class TitleScreen extends BaseScreen {
         builderBtn = LabelButton.makeButton(this.game, "play as builder", new LabelButton.Callback() {
             @Override
             public void onClick() {
-                TitleScreen.this.transitionOutScreen(new TestGameScreen(TitleScreen.this.game, GameController.ROLE.BUILDER));
+                // try to initiate finding a game
+                if (!game.playServices.isSignedIn()) {
+                    game.playServices.signIn();
+                }
+                game.playServices.connectOnline();
+                game.playServices.findGame(GameController.ROLE.DRIVER.getValue());
             }
         });
         builderBtn.setInvisible(true);
@@ -146,20 +146,20 @@ public class TitleScreen extends BaseScreen {
         // Initial intro tween animation
         Timeline.createSequence()
                 .beginParallel()
-                .push(Tween.from(gameLogo, Tweens.POSITION_X, 2f) .targetRelative(-500) .ease(TweenEquations.easeInOutCubic) .delay(0.5f))
-                .push(Tween.to(gameLogo, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(0.25f))
+                .push(Tween.from(gameLogo, Tweens.POSITION_X, 2f) .targetRelative(-500) .ease(TweenEquations.easeInOutCubic))
+                .push(Tween.to(gameLogo, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack))
 
-                .push(Tween.from(driverBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(1.5f))
-                .push(Tween.to(driverBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1f))
+                .push(Tween.from(driverBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(1f))
+                .push(Tween.to(driverBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(0.5f))
 
-                .push(Tween.from(builderBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(2f))
-                .push(Tween.to(builderBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1.5f))
+                .push(Tween.from(builderBtn, Tweens.POSITION_X, 2f) .targetRelative(500) .ease(TweenEquations.easeInOutCubic) .delay(1.5f))
+                .push(Tween.to(builderBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1f))
 
-                .push(Tween.to(helpBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1.5f))
+                .push(Tween.to(helpBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1f))
 
-                .push(Tween.to(settingsBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1.5f))
+                .push(Tween.to(settingsBtn, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1f))
 
-                .push(Tween.to(achievementsButton, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1.5f))
+                .push(Tween.to(achievementsButton, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack) .delay(1f))
                 .end()
                 .start(this.tweenManager);
     }
