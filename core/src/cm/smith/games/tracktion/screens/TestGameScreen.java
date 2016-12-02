@@ -44,7 +44,7 @@ public class TestGameScreen extends BaseScreen {
 
         // Setup game objects
         vehicle = new Vehicle(this.game, this.physicsWorld, 1.2f, 2.4f,
-                new Vector2(10, 10), (float) Math.PI, 60, 15, 25, 80);
+                new Vector2(10, 10), (float) Math.PI * 0.5f, 60, 15, 25, 80);
         this.engine.addEntity(vehicle);
 
         // Setup HUD
