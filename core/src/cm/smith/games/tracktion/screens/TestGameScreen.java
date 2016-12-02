@@ -3,6 +3,7 @@ package cm.smith.games.tracktion.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
@@ -35,7 +36,8 @@ public class TestGameScreen extends BaseScreen {
         game.playServices.setGameManager(gameController);
         touchPoint = new Vector3();
 
-        vehicle = new Vehicle(this.game);
+        vehicle = new Vehicle(this.game, this.physicsWorld, 1, 2,
+                new Vector2(10, 10), (float) Math.PI, 60, 15, 25, 100);
 
         hud = new Hud(this.game);
         hud.setupBaseHud();
@@ -46,6 +48,8 @@ public class TestGameScreen extends BaseScreen {
             hud.setupBuilderHud();
         }
         uiStage.addActor(hud);
+
+        this.uiStage.setDebugAll(true);
     }
 
     @Override
@@ -90,16 +94,23 @@ public class TestGameScreen extends BaseScreen {
         hud.updateTimer(gameController.getTimer());
 
         if (hud.isLeftDown) {
-            vehicle.leftInput(delta);
+            vehicle.setSteer(Vehicle.STEER_LEFT);
             Gdx.app.log("VEHICLE", "LEFT");
         }
-        if (hud.isRightDown) {
-            vehicle.rightInput(delta);
+        else if (hud.isRightDown) {
+            vehicle.setSteer(Vehicle.STEER_RIGHT);
             Gdx.app.log("VEHICLE", "RIGHT");
         }
+        else {
+            vehicle.setSteer(Vehicle.STEER_NONE);
+        }
+
         if (hud.isAccelerateDown) {
-            vehicle.accelerator(delta);
+            vehicle.setAccelerate(Vehicle.ACC_ACCELERATE);
             Gdx.app.log("VEHICLE", "ACCELERATE");
+        }
+        else {
+            vehicle.setAccelerate(Vehicle.ACC_NONE);
         }
 
         vehicle.update(delta);

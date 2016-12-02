@@ -32,6 +32,9 @@ public abstract class BaseScreen implements Screen {
     public static final float SCALE_Y =
             (float)Gdx.graphics.getHeight()/MainGame.VIEW_HEIGHT;
 
+    /** Used for Box2D Physics engine */
+    public static final int PIXELS_PER_METER=16;
+
     final MainGame game;
     OrthographicCamera camera;
 

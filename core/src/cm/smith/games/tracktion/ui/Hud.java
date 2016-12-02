@@ -10,6 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.controllers.GameController;
 import cm.smith.games.tracktion.screens.BaseScreen;
@@ -21,6 +24,8 @@ import cm.smith.games.tracktion.screens.BaseScreen;
 public class Hud extends Stack {
 
     private MainGame game;
+    private DecimalFormat secondsFormatter;
+    private DecimalFormat milliFormatter;
 
     public boolean isLeftDown;
     public boolean isRightDown;
@@ -35,6 +40,9 @@ public class Hud extends Stack {
     public UIImageButton accelerateButton;
 
     public Hud(MainGame game) {
+        secondsFormatter = new DecimalFormat("00");
+        // TODO: setup milliformatter to show the milliseconds roll by
+
         isLeftDown = false;
         isRightDown = false;
         isAccelerateDown = false;
@@ -43,12 +51,12 @@ public class Hud extends Stack {
     }
 
     public void setupBaseHud() {
-        time = UILabel.makeLabel(this.game, "00:00.00", 75);
+        time = UILabel.makeLabel(this.game, "0:00", 75);
 
         Table timeTable = new Table();
         timeTable.setFillParent(true);
 
-        timeTable.add(time).top().right();
+        timeTable.add(time).top();
         add(timeTable);
     }
 
@@ -107,11 +115,13 @@ public class Hud extends Stack {
 
         Table gearbox = new Table();
         gearbox.setFillParent(true);
-        gearbox.add(accelerateButton.padRight(80 * BaseScreen.SCALE_X).padBottom(90 * BaseScreen.SCALE_Y));
+        gearbox.add(accelerateButton
+                .padRight(80 * BaseScreen.SCALE_X)
+                .padBottom(90 * BaseScreen.SCALE_Y));
 
         setFillParent(true);
-        add(turningTable.bottom().left());
         add(gearbox.bottom().right());
+        add(turningTable.bottom().left());
     }
 
     public void setupBuilderHud() {
@@ -119,8 +129,13 @@ public class Hud extends Stack {
     }
 
     public void updateTimer(float timeToShow) {
-        String value = String.format(java.util.Locale.US,"%.1f", timeToShow);
-        time.setText(value);
+        int minutes = (int)(timeToShow / 60);
+        int seconds = (int)(timeToShow % 60);
+        time.setText(minutes + ":" + secondsFormatter.format(seconds));
+    }
+
+    public void update(float delta) {
+        
     }
 
 }
