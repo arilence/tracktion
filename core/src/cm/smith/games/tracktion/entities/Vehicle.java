@@ -103,6 +103,8 @@ public class Vehicle extends Entity {
         this.wheels.add(new Wheel(world, this, 0.5f, -0.6f, 0.2f, 0.4f, true,  true)); //top right
         this.wheels.add(new Wheel(world, this, -0.5f, 0.6f, 0.2f, 0.4f, false,  false)); //back left
         this.wheels.add(new Wheel(world, this, 0.5f, 0.6f, 0.2f, 0.4f, false,  false)); //back right
+
+        updateComponents();
     }
 
     public void update (float delta){
@@ -176,7 +178,10 @@ public class Vehicle extends Entity {
             wheel.body.applyForce(wheel.body.getWorldVector(new Vector2(forceVector.x, forceVector.y)), position, true);
         }
 
-        // update components
+        updateComponents();
+    }
+
+    private void updateComponents() {
         transformComponent.pos.x = body.getPosition().x;
         transformComponent.pos.y = body.getPosition().y;
         transformComponent.pos.z = 0;

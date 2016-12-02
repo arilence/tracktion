@@ -98,7 +98,8 @@ public abstract class BaseScreen implements Screen {
         tweenManager.update(delta);
 
         doPhysicsStep(delta);
-        debugPhysicsRenderer.render(physicsWorld, gameCamera.combined);
+        // TODO: remove debug physics renderer
+        //debugPhysicsRenderer.render(physicsWorld, gameCamera.combined);
     }
 
     private void doPhysicsStep(float deltaTime) {
