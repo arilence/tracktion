@@ -6,6 +6,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -36,6 +39,11 @@ public abstract class BaseScreen implements Screen {
     Engine engine;
     TweenManager tweenManager;
 
+    // box-2d physics stuff
+    World physicsWorld;
+    Box2DDebugRenderer debugPhysicsRenderer;
+
+
     public BaseScreen(MainGame game) {
         this.game = game;
 
@@ -45,6 +53,10 @@ public abstract class BaseScreen implements Screen {
         engine = new Engine();
         uiStage = new Stage(new ScreenViewport());
         tweenManager = new TweenManager();
+
+        // setup physics engine
+        physicsWorld = new World(new Vector2(0, 0), true);
+        debugPhysicsRenderer = new Box2DDebugRenderer();
     }
 
     @Override
@@ -60,13 +72,13 @@ public abstract class BaseScreen implements Screen {
 
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
-
         engine.update(delta);
-
         uiStage.act();
         uiStage.draw();
-
         tweenManager.update(delta);
+
+        physicsWorld.step(1/60f, 6, 2);
+        debugPhysicsRenderer.render(physicsWorld, camera.combined);
     }
 
     @Override
