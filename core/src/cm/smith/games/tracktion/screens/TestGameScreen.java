@@ -1,8 +1,10 @@
 package cm.smith.games.tracktion.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -13,9 +15,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.controllers.GameController;
 import cm.smith.games.tracktion.entities.Vehicle;
+import cm.smith.games.tracktion.systems.RenderingSystem;
 import cm.smith.games.tracktion.ui.Hud;
 import cm.smith.games.tracktion.ui.LabelButton;
 import cm.smith.games.tracktion.ui.UIImageButton;
+import javafx.geometry.Bounds;
 
 /**
  * Created by anthony on 2016-11-03.
@@ -23,8 +27,8 @@ import cm.smith.games.tracktion.ui.UIImageButton;
 
 public class TestGameScreen extends BaseScreen {
 
+    public static final float LERP = 10f;
     private GameController gameController;
-    private Vector3 touchPoint;
     private Vehicle vehicle;
     private Hud hud;
 
@@ -34,11 +38,16 @@ public class TestGameScreen extends BaseScreen {
         gameController.setRole(role);
 
         game.playServices.setGameManager(gameController);
-        touchPoint = new Vector3();
 
-        vehicle = new Vehicle(this.game, this.physicsWorld, 1, 2,
-                new Vector2(10, 10), (float) Math.PI, 60, 15, 25, 100);
+        // Add systems to engine
+        this.engine.addSystem(new RenderingSystem(this.game.gameBatch));
 
+        // Setup game objects
+        vehicle = new Vehicle(this.game, this.physicsWorld, 1.2f, 2.4f,
+                new Vector2(10, 10), (float) Math.PI, 60, 15, 25, 80);
+        this.engine.addEntity(vehicle);
+
+        // Setup HUD
         hud = new Hud(this.game);
         hud.setupBaseHud();
         if (gameController.getRole() == GameController.ROLE.DRIVER) {
@@ -48,8 +57,6 @@ public class TestGameScreen extends BaseScreen {
             hud.setupBuilderHud();
         }
         uiStage.addActor(hud);
-
-        this.uiStage.setDebugAll(true);
     }
 
     @Override
@@ -60,6 +67,11 @@ public class TestGameScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
+
+        // Update the game camera
+        float newX = (vehicle.transformComponent.pos.x - this.gameCamera.position.x) * LERP * delta;
+        float newY = (vehicle.transformComponent.pos.y - this.gameCamera.position.y) * LERP * delta;
+        this.gameCamera.translate(newX, newY);
 
         switch(gameController.getState()) {
             case PRE_GAME:
@@ -78,10 +90,6 @@ public class TestGameScreen extends BaseScreen {
                 updateGameOver(delta);
                 break;
         }
-
-        this.game.batch.begin();
-        this.vehicle.render(this.game.batch);
-        this.game.batch.end();
     }
 
     private void updatePreGame(float delta) {

@@ -27,8 +27,8 @@ public class GameController {
     private ROLE currentRole;
     private boolean firstTimeState;     // tracks the first time update of state
 
-    private static float TIME_PREGAME = 15f;
-    private static float TIME_PLAYING = 30f;
+    private static float TIME_PREGAME = 5f;
+    private static float TIME_PLAYING = 0f;
     private static float TIME_DEAD = 5f;
     private static float TIME_GAMEOVER = 30f;
 
@@ -37,7 +37,7 @@ public class GameController {
     private Vehicle vehicle;
 
     public GameController() {
-        currentState = STATE.PLAYING;
+        currentState = STATE.PRE_GAME;
         firstTimeState = true;
     }
 
@@ -60,12 +60,15 @@ public class GameController {
             time = TIME_PREGAME;
             firstTimeState = false;
         }
+        if (time <= 0) {
+            currentState = STATE.PLAYING;
+        }
         time -= delta;
     }
 
     public void updatePlaying(float delta) {
         if (firstTimeState) {
-            time = 0;
+            time = TIME_PLAYING;
             firstTimeState = false;
         }
         time += delta;
@@ -75,6 +78,9 @@ public class GameController {
         if (firstTimeState) {
             time = TIME_DEAD;
             firstTimeState = false;
+        }
+        if (time <= 0) {
+            currentState = STATE.GAME_OVER;
         }
         time -= delta;
     }

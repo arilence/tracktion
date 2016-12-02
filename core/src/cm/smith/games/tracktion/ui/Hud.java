@@ -3,6 +3,7 @@ package cm.smith.games.tracktion.ui;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
@@ -62,9 +63,9 @@ public class Hud extends Stack {
 
     public void setupDriverHud() {
         Texture texture = game.assetManager.get("gamecontrols.png", Texture.class);
-        TextureRegion leftTexture = new TextureRegion(texture, 0, 0, 64, 128);
-        TextureRegion rightTexture = new TextureRegion(texture, 0, 0, 64, 128);
-        TextureRegion accelerateTexture = new TextureRegion(texture, 0, 128, 128, 64);
+        TextureRegion leftTexture = new TextureRegion(texture, 0, 0, 128, 256);
+        TextureRegion rightTexture = new TextureRegion(texture, 0, 0, 128, 256);
+        TextureRegion accelerateTexture = new TextureRegion(texture, 0, 256, 256, 128);
         rightTexture.flip(true, false);
 
         turnLeftButton = UIImageButton.makeButton(game, leftTexture);
@@ -73,45 +74,48 @@ public class Hud extends Stack {
 
         turnLeftButton.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 isLeftDown = true;
-                return super.touchDown(event, x, y, pointer, button);
+                super.enter(event, x, y, pointer, fromActor);
             }
+
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 isLeftDown = false;
-                super.touchUp(event, x, y, pointer, button);
+                super.exit(event, x, y, pointer, toActor);
             }
         });
         turnRightButton.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 isRightDown = true;
-                return super.touchDown(event, x, y, pointer, button);
+                super.enter(event, x, y, pointer, fromActor);
             }
+
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 isRightDown = false;
-                super.touchUp(event, x, y, pointer, button);
+                super.exit(event, x, y, pointer, toActor);
             }
         });
         accelerateButton.addListener(new ClickListener() {
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 isAccelerateDown = true;
-                return super.touchDown(event, x, y, pointer, button);
+                super.enter(event, x, y, pointer, fromActor);
             }
+
             @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 isAccelerateDown = false;
-                super.touchUp(event, x, y, pointer, button);
+                super.exit(event, x, y, pointer, toActor);
             }
         });
 
         Table turningTable = new Table();
         turningTable.setFillParent(true);
-        turningTable.add(turnLeftButton).padLeft(80 * BaseScreen.SCALE_X).padBottom(70 * BaseScreen.SCALE_Y);
-        turningTable.add(turnRightButton).padLeft(100 * BaseScreen.SCALE_X).padBottom(70 * BaseScreen.SCALE_Y);
+        turningTable.add(turnLeftButton).padLeft(90 * BaseScreen.SCALE_X).padBottom(70 * BaseScreen.SCALE_Y);
+        turningTable.add(turnRightButton).padLeft(70 * BaseScreen.SCALE_X).padBottom(70 * BaseScreen.SCALE_Y);
 
         Table gearbox = new Table();
         gearbox.setFillParent(true);
@@ -135,7 +139,7 @@ public class Hud extends Stack {
     }
 
     public void update(float delta) {
-        
+
     }
 
 }

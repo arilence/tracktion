@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -19,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cm.smith.games.tracktion.MainGame;
+import cm.smith.games.tracktion.components.TextureComponent;
+import cm.smith.games.tracktion.components.TransformComponent;
 import cm.smith.games.tracktion.screens.BaseScreen;
 
 /**
@@ -31,7 +32,7 @@ public class Vehicle extends Entity {
     public Sprite vehicleSprite;
 
     public Body body;
-    float width, length, angle, maxSteerAngle, minSteerAngle, maxSpeed, power;
+    public float width, length, angle, maxSteerAngle, minSteerAngle, maxSpeed, power;
     float wheelAngle;
     private int steer, accelerate;
     public List<Wheel> wheels;
@@ -47,11 +48,23 @@ public class Vehicle extends Entity {
     public static final int ACC_ACCELERATE=1;
     public static final int ACC_BRAKE=2;
 
+    // Components
+    public TextureComponent textureComponent;
+    public TransformComponent transformComponent;
+
     public Vehicle(MainGame game, World world, float width, float length, Vector2 position,
                    float angle, float power, float minSteerAngle, float maxSteerAngle, float maxSpeed) {
+
         texture = game.assetManager.get("vehicle.png", Texture.class);
         textureRegion = new TextureRegion(texture);
         vehicleSprite = new Sprite(textureRegion);
+
+        // Add components
+        textureComponent = new TextureComponent();
+        textureComponent.region = textureRegion;
+        transformComponent = new TransformComponent();
+        add(textureComponent);
+        add(transformComponent);
 
         this.isAccelerating = false;
 
@@ -163,16 +176,11 @@ public class Vehicle extends Entity {
             wheel.body.applyForce(wheel.body.getWorldVector(new Vector2(forceVector.x, forceVector.y)), position, true);
         }
 
-        //if going very slow, stop - to prevent endless sliding
-
-    }
-
-    public void render(SpriteBatch batch) {
-        vehicleSprite.setPosition(BaseScreen.PIXELS_PER_METER * body.getPosition().x - vehicleSprite.getRegionWidth() / 2,
-                BaseScreen.PIXELS_PER_METER * body.getPosition().y - vehicleSprite.getRegionHeight() / 2 );
-        vehicleSprite.setRotation((MathUtils.radiansToDegrees * body.getAngle()));
-
-        vehicleSprite.draw(batch);
+        // update components
+        transformComponent.pos.x = body.getPosition().x;
+        transformComponent.pos.y = body.getPosition().y;
+        transformComponent.pos.z = 0;
+        transformComponent.rotation = body.getAngle();
     }
 
     public List<Wheel> getPoweredWheels () {

@@ -41,9 +41,9 @@ public class LoadingScreen extends BaseScreen {
 
         // display loading information
         float progress = game.assetManager.getProgress();
-        this.game.batch.begin();
-        this.game.font.draw(this.game.batch, "Loading: " + (int)(progress*100) + "%", ((Gdx.graphics.getWidth() / SCALE_X) / 2) - 50, ((Gdx.graphics.getHeight() / SCALE_Y) / 2) + 5);
-        this.game.batch.end();
+        this.game.uiBatch.begin();
+        this.game.font.draw(this.game.uiBatch, "Loading: " + (int)(progress*100) + "%", ((Gdx.graphics.getWidth() / SCALE_X) / 2) - 50, ((Gdx.graphics.getHeight() / SCALE_Y) / 2) + 5);
+        this.game.uiBatch.end();
     }
 
     private void loadTextures() {

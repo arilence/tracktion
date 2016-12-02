@@ -15,7 +15,8 @@ public class MainGame extends Game {
 	public static final int VIEW_WIDTH = 1280;
 	public static final int VIEW_HEIGHT = 720;
 
-    public SpriteBatch batch;
+    public SpriteBatch uiBatch;
+    public SpriteBatch gameBatch;
     public BitmapFont font;
     public PlayServices playServices;
     public AssetManager assetManager;
@@ -26,7 +27,8 @@ public class MainGame extends Game {
 
 	@Override
 	public void create () {
-        batch = new SpriteBatch();
+        uiBatch = new SpriteBatch();
+        gameBatch = new SpriteBatch();
         font = new BitmapFont();
         assetManager = new AssetManager();
 
@@ -37,14 +39,15 @@ public class MainGame extends Game {
     public void render() {
         super.render(); //important!
 
-        batch.begin();
-        font.draw(batch, "FPS: " + (1 / Gdx.graphics.getDeltaTime()), 20, 30);
-        batch.end();
+        uiBatch.begin();
+        font.draw(uiBatch, "FPS: " + (1 / Gdx.graphics.getDeltaTime()), 20, 30);
+        uiBatch.end();
     }
 
     @Override
     public void dispose() {
-        batch.dispose();
+        uiBatch.dispose();
+        gameBatch.dispose();
         font.dispose();
     }
 

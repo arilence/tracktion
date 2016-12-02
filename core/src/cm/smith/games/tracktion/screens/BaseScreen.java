@@ -2,6 +2,7 @@ package cm.smith.games.tracktion.screens;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
@@ -33,18 +34,26 @@ public abstract class BaseScreen implements Screen {
             (float)Gdx.graphics.getHeight()/MainGame.VIEW_HEIGHT;
 
     /** Used for Box2D Physics engine */
-    public static final int PIXELS_PER_METER=16;
+    public static final int PIXELS_PER_METER=48;
+
+    /** Used for Box2D Physics engine */
+    public final static float STEP_TIME = 1.0f / 60.0f;
 
     final MainGame game;
     OrthographicCamera camera;
+    OrthographicCamera gameCamera;
 
+    InputMultiplexer inputMultiplexer;
     Stage uiStage;
+
     Engine engine;
     TweenManager tweenManager;
 
     // box-2d physics stuff
     World physicsWorld;
     Box2DDebugRenderer debugPhysicsRenderer;
+
+    private float accumulator = 0;
 
 
     public BaseScreen(MainGame game) {
@@ -53,6 +62,9 @@ public abstract class BaseScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, MainGame.VIEW_WIDTH, MainGame.VIEW_HEIGHT);
 
+        gameCamera = new OrthographicCamera();
+        gameCamera.setToOrtho(false, MainGame.VIEW_WIDTH / PIXELS_PER_METER, MainGame.VIEW_HEIGHT / PIXELS_PER_METER);
+
         engine = new Engine();
         uiStage = new Stage(new ScreenViewport());
         tweenManager = new TweenManager();
@@ -60,12 +72,15 @@ public abstract class BaseScreen implements Screen {
         // setup physics engine
         physicsWorld = new World(new Vector2(0, 0), true);
         debugPhysicsRenderer = new Box2DDebugRenderer();
+
+        inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(uiStage);
     }
 
     @Override
     public void show() {
         Gdx.input.setCatchBackKey(true);
-        Gdx.input.setInputProcessor(uiStage);
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     @Override
@@ -74,14 +89,27 @@ public abstract class BaseScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+        game.uiBatch.setProjectionMatrix(camera.combined);
+        gameCamera.update();
+        game.gameBatch.setProjectionMatrix(gameCamera.combined);
         engine.update(delta);
         uiStage.act();
         uiStage.draw();
         tweenManager.update(delta);
 
-        physicsWorld.step(1/60f, 6, 2);
-        debugPhysicsRenderer.render(physicsWorld, camera.combined);
+        doPhysicsStep(delta);
+        debugPhysicsRenderer.render(physicsWorld, gameCamera.combined);
+    }
+
+    private void doPhysicsStep(float deltaTime) {
+        // fixed time step
+        // max frame time to avoid spiral of death (on slow devices)
+        float frameTime = Math.min(deltaTime, 0.25f);
+        accumulator += frameTime;
+        while (accumulator >= STEP_TIME) {
+            physicsWorld.step(STEP_TIME, 6, 2);
+            accumulator -= STEP_TIME;
+        }
     }
 
     @Override
@@ -107,6 +135,8 @@ public abstract class BaseScreen implements Screen {
     @Override
     public void dispose() {
         uiStage.dispose();
+        physicsWorld.dispose();
+        debugPhysicsRenderer.dispose();
     }
 
     public void transitionOut(final Timeline timeline, final BaseScreen newScreen) {
