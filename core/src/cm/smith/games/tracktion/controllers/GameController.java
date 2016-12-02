@@ -1,5 +1,7 @@
 package cm.smith.games.tracktion.controllers;
 
+import cm.smith.games.tracktion.entities.Vehicle;
+
 /**
  * Created by anthony on 2016-09-18.
  */
@@ -23,9 +25,20 @@ public class GameController {
 
     private STATE currentState;
     private ROLE currentRole;
+    private boolean firstTimeState;     // tracks the first time update of state
+
+    private static float TIME_PREGAME = 15f;
+    private static float TIME_PLAYING = 30f;
+    private static float TIME_DEAD = 5f;
+    private static float TIME_GAMEOVER = 30f;
+
+    // Store all of the network shared entities in the controller
+    private float time = 0f;    // time left for the current state
+    private Vehicle vehicle;
 
     public GameController() {
-        currentState = STATE.PRE_GAME;
+        currentState = STATE.PLAYING;
+        firstTimeState = true;
     }
 
     public void setRole(ROLE role) {
@@ -36,6 +49,42 @@ public class GameController {
 
     public STATE getState() {
         return this.currentState;
+    }
+
+    public float getTimer() {
+        return this.time;
+    }
+
+    public void updatePreGame(float delta) {
+        if (firstTimeState) {
+            time = TIME_PREGAME;
+            firstTimeState = false;
+        }
+        time -= delta;
+    }
+
+    public void updatePlaying(float delta) {
+        if (firstTimeState) {
+            time = 0;
+            firstTimeState = false;
+        }
+        time += delta;
+    }
+
+    public void updateDead(float delta) {
+        if (firstTimeState) {
+            time = TIME_DEAD;
+            firstTimeState = false;
+        }
+        time -= delta;
+    }
+
+    public void updateGameOver(float delta) {
+        if (firstTimeState) {
+            time = TIME_GAMEOVER;
+            firstTimeState = false;
+        }
+        time -= delta;
     }
 
 }

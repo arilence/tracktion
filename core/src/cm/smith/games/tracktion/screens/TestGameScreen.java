@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.controllers.GameController;
+import cm.smith.games.tracktion.entities.Vehicle;
 import cm.smith.games.tracktion.ui.Hud;
 import cm.smith.games.tracktion.ui.LabelButton;
 import cm.smith.games.tracktion.ui.UIImageButton;
@@ -23,6 +24,7 @@ public class TestGameScreen extends BaseScreen {
 
     private GameController gameController;
     private Vector3 touchPoint;
+    private Vehicle vehicle;
     private Hud hud;
 
     public TestGameScreen(MainGame game, GameController.ROLE role) {
@@ -33,8 +35,7 @@ public class TestGameScreen extends BaseScreen {
         game.playServices.setGameManager(gameController);
         touchPoint = new Vector3();
 
-        // TODO: setup vehicle
-        // TODO: setup map world
+        vehicle = new Vehicle(this.game);
 
         hud = new Hud(this.game);
         hud.setupBaseHud();
@@ -58,44 +59,59 @@ public class TestGameScreen extends BaseScreen {
 
         switch(gameController.getState()) {
             case PRE_GAME:
+                updatePreGame(delta);
                 break;
 
             case PLAYING:
-                updatePlaying();
+                updatePlaying(delta);
                 break;
 
             case DEAD:
+                updateDead(delta);
                 break;
 
             case GAME_OVER:
+                updateGameOver(delta);
                 break;
         }
 
-        if (Gdx.input.isTouched()) {
-            this.camera.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-
-//            float midpoint = MainGame.VIEW_WIDTH / 2;
-//            if (touchPoint.x < midpoint) {
-//                // TODO: tell vehicle to turn left
-//                Gdx.app.log("VEHICLE", "LEFT, " + Float.toString(midpoint) + ", " + Float.toString(touchPoint.x));
-//            }
-//            if (touchPoint.x >= midpoint){
-//                // TODO: tell vehicle to turn right
-//                Gdx.app.log("VEHICLE", "RIGHT, " + Float.toString(midpoint) + ", " + Float.toString(touchPoint.x));
-//            }
-        }
-
+        this.game.batch.begin();
+        this.vehicle.render(this.game.batch);
+        this.game.batch.end();
     }
 
-    public void updatePlaying() {
+    private void updatePreGame(float delta) {
+        gameController.updatePreGame(delta);
+        hud.updateTimer(gameController.getTimer());
+    }
+
+    private void updatePlaying(float delta) {
+        gameController.updatePlaying(delta);
+        hud.updateTimer(gameController.getTimer());
+
         if (hud.isLeftDown) {
+            vehicle.leftInput(delta);
             Gdx.app.log("VEHICLE", "LEFT");
         }
         if (hud.isRightDown) {
+            vehicle.rightInput(delta);
             Gdx.app.log("VEHICLE", "RIGHT");
         }
         if (hud.isAccelerateDown) {
+            vehicle.accelerator(delta);
             Gdx.app.log("VEHICLE", "ACCELERATE");
         }
+
+        vehicle.update(delta);
+    }
+
+    private void updateDead(float delta) {
+        gameController.updateDead(delta);
+        hud.updateTimer(gameController.getTimer());
+    }
+
+    private void updateGameOver(float delta) {
+        gameController.updateGameOver(delta);
+        hud.updateTimer(gameController.getTimer());
     }
 }

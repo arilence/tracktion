@@ -49,6 +49,7 @@ public class LoadingScreen extends BaseScreen {
     private void loadTextures() {
         game.assetManager.load("uislider.png", Texture.class);
         game.assetManager.load("gamecontrols.png", Texture.class);
+        game.assetManager.load("vehicle.png", Texture.class);
     }
 
     private void loadFonts() {

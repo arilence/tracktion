@@ -27,7 +27,7 @@ public class Hud extends Stack {
     public boolean isAccelerateDown;
 
     // Generic HUD
-    private UILabel timeRemaining;
+    private UILabel time;
 
     // Driver HUD
     public UIImageButton turnLeftButton;
@@ -43,12 +43,12 @@ public class Hud extends Stack {
     }
 
     public void setupBaseHud() {
-        timeRemaining = UILabel.makeLabel(this.game, "00:00.00", 75);
+        time = UILabel.makeLabel(this.game, "00:00.00", 75);
 
         Table timeTable = new Table();
         timeTable.setFillParent(true);
 
-        timeTable.add(timeRemaining).top().right();
+        timeTable.add(time).top().right();
         add(timeTable);
     }
 
@@ -116,6 +116,11 @@ public class Hud extends Stack {
 
     public void setupBuilderHud() {
 
+    }
+
+    public void updateTimer(float timeToShow) {
+        String value = String.format(java.util.Locale.US,"%.1f", timeToShow);
+        time.setText(value);
     }
 
 }
