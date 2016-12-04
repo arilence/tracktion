@@ -46,7 +46,7 @@ public class TestGameScreen extends BaseScreen {
         this.engine.addSystem(new RenderingSystem(this.game.gameBatch));
 
         // Setup HUD
-        hud = new Hud(this.game, role);
+        hud = new Hud(this, role);
         uiStage.addActor(hud);
 
         // Setup game objects

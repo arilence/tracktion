@@ -39,19 +39,19 @@ public abstract class BaseScreen implements Screen {
     /** Used for Box2D Physics engine */
     public final static float STEP_TIME = 1.0f / 60.0f;
 
-    final MainGame game;
-    OrthographicCamera camera;
-    OrthographicCamera gameCamera;
+    public final MainGame game;
+    public OrthographicCamera camera;
+    public OrthographicCamera gameCamera;
 
-    InputMultiplexer inputMultiplexer;
-    Stage uiStage;
+    public InputMultiplexer inputMultiplexer;
+    public Stage uiStage;
 
-    Engine engine;
-    TweenManager tweenManager;
+    public Engine engine;
+    public TweenManager tweenManager;
 
     // box-2d physics stuff
-    World physicsWorld;
-    Box2DDebugRenderer debugPhysicsRenderer;
+    public World physicsWorld;
+    public Box2DDebugRenderer debugPhysicsRenderer;
 
     private float accumulator = 0;
 

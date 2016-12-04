@@ -27,7 +27,7 @@ public class GameScreen extends BaseScreen {
         Vehicle vehicle = new Vehicle(this.game, this.physicsWorld, 1.2f, 2.4f,
                 new Vector2(10, 10), (float) Math.PI * 0.5f, 60, 15, 25, 80);
 
-        Hud hud = new Hud(this.game, GameController.ROLE.DRIVER);
+        Hud hud = new Hud(this, GameController.ROLE.DRIVER);
 
         gameController = new GameController(GameController.ROLE.DRIVER, vehicle, hud);
         game.multiplayerServices.setGameManager(gameController);

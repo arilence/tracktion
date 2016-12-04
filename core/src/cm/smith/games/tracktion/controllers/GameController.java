@@ -91,6 +91,7 @@ public class GameController {
         if (firstTimeState) {
             time = TIME_PREGAME;
             firstTimeState = false;
+            hud.playText("Get Ready!");
         }
         if (time <= 0) {
             currentState = STATE.PLAYING;
@@ -103,6 +104,7 @@ public class GameController {
         if (firstTimeState) {
             time = TIME_PLAYING;
             firstTimeState = false;
+            hud.playText("GO");
         }
         if (vehicle.isDead()) {
             currentState = STATE.DEAD;
@@ -114,6 +116,7 @@ public class GameController {
         if (firstTimeState) {
             time = TIME_DEAD;
             firstTimeState = false;
+            hud.playText("Nice try!");
         }
         if (time <= 0) {
             currentState = STATE.GAME_OVER;

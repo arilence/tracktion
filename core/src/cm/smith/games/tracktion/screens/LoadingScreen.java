@@ -75,5 +75,11 @@ public class LoadingScreen extends BaseScreen {
         parameter75.fontParameters.size = (int)(75 * (BaseScreen.SCALE_X));
         parameter75.fontParameters.color = Color.WHITE;
         game.assetManager.load("font75.ttf", BitmapFont.class, parameter75);
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter parameter120 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        parameter120.fontFileName = "Roboto-Thin.ttf";
+        parameter120.fontParameters.size = (int)(120 * (BaseScreen.SCALE_X));
+        parameter120.fontParameters.color = Color.WHITE;
+        game.assetManager.load("font120.ttf", BitmapFont.class, parameter120);
     }
 }

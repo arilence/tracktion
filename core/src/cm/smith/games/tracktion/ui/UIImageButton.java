@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 
 import aurelienribon.tweenengine.TweenAccessor;
 import cm.smith.games.tracktion.MainGame;
@@ -27,7 +28,6 @@ public class UIImageButton extends ImageButton implements TweenAccessor<ImageBut
     /**
      * Method that generates a text button with a custom callback function
      * @param texture Image that is displayed on the button
-     * @param callback Method is called once the button is clicked
      * @return
      */
     public static UIImageButton makeButton(MainGame game, TextureRegion texture) {
@@ -39,6 +39,9 @@ public class UIImageButton extends ImageButton implements TweenAccessor<ImageBut
         btnStyle.unpressedOffsetX = -1;
 
         UIImageButton tempBtn = new UIImageButton(btnStyle);
+        tempBtn.getImage().setScale(BaseScreen.SCALE_Y / 2);
+        tempBtn.pack();
+        tempBtn.getImage().setOrigin(Align.center);
         return tempBtn;
     }
 

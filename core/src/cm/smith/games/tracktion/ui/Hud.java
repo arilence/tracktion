@@ -1,5 +1,6 @@
 package cm.smith.games.tracktion.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -14,7 +15,13 @@ import com.badlogic.gdx.utils.Align;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
+import aurelienribon.tweenengine.BaseTween;
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
+import aurelienribon.tweenengine.TweenEquations;
 import cm.smith.games.tracktion.MainGame;
+import cm.smith.games.tracktion.Tweens;
 import cm.smith.games.tracktion.controllers.GameController;
 import cm.smith.games.tracktion.screens.BaseScreen;
 
@@ -24,7 +31,7 @@ import cm.smith.games.tracktion.screens.BaseScreen;
 
 public class Hud extends Stack {
 
-    private MainGame game;
+    private BaseScreen screen;
     private DecimalFormat secondsFormatter;
     private DecimalFormat milliFormatter;
 
@@ -34,13 +41,15 @@ public class Hud extends Stack {
 
     // Generic HUD
     private UILabel time;
+    private UILabel mode;
+    private Table modeTable;
 
     // Driver HUD
     public UIImageButton turnLeftButton;
     public UIImageButton turnRightButton;
     public UIImageButton accelerateButton;
 
-    public Hud(MainGame game, GameController.ROLE role) {
+    public Hud(BaseScreen screen, GameController.ROLE role) {
         secondsFormatter = new DecimalFormat("00");
         // TODO: setup milliformatter to show the milliseconds roll by
 
@@ -48,7 +57,8 @@ public class Hud extends Stack {
         isRightDown = false;
         isAccelerateDown = false;
 
-        this.game = game;
+        this.screen = screen;
+        modeTable = new Table();
         setFillParent(true);
         setupBaseHud();
 
@@ -61,7 +71,7 @@ public class Hud extends Stack {
     }
 
     public void setupBaseHud() {
-        time = UILabel.makeLabel(this.game, "0:00", 75);
+        time = UILabel.makeLabel(screen.game, "0:00", 75);
 
         Table timeTable = new Table();
         timeTable.setFillParent(true);
@@ -71,15 +81,15 @@ public class Hud extends Stack {
     }
 
     public void setupDriverHud() {
-        Texture texture = game.assetManager.get("gamecontrols.png", Texture.class);
+        Texture texture = screen.game.assetManager.get("gamecontrols.png", Texture.class);
         TextureRegion leftTexture = new TextureRegion(texture, 0, 0, 128, 256);
         TextureRegion rightTexture = new TextureRegion(texture, 0, 0, 128, 256);
         TextureRegion accelerateTexture = new TextureRegion(texture, 0, 256, 256, 128);
         rightTexture.flip(true, false);
 
-        turnLeftButton = UIImageButton.makeButton(game, leftTexture);
-        turnRightButton = UIImageButton.makeButton(game, rightTexture);
-        accelerateButton = UIImageButton.makeButton(game, accelerateTexture);
+        turnLeftButton = UIImageButton.makeButton(screen.game, leftTexture);
+        turnRightButton = UIImageButton.makeButton(screen.game, rightTexture);
+        accelerateButton = UIImageButton.makeButton(screen.game, accelerateTexture);
 
         turnLeftButton.addListener(new ClickListener() {
             @Override
@@ -130,7 +140,7 @@ public class Hud extends Stack {
         gearbox.setFillParent(true);
         gearbox.add(accelerateButton
                 .padRight(80 * BaseScreen.SCALE_X)
-                .padBottom(90 * BaseScreen.SCALE_Y));
+                .padBottom(100 * BaseScreen.SCALE_Y));
 
         add(gearbox.bottom().right());
         add(turningTable.bottom().left());
@@ -148,6 +158,25 @@ public class Hud extends Stack {
 
     public void update(float delta) {
 
+    }
+
+    public void playText(String text) {
+        if (mode != null) {
+            modeTable.removeActor(mode);
+        }
+        mode = UILabel.makeLabel(screen.game, text, 120);
+        modeTable.add(mode);
+        add(modeTable);
+
+        Tween.to(mode, Tweens.ALPHA, 0.5f) .target(1) .ease(TweenEquations.easeInBack)
+                .setCallback(new TweenCallback() {
+                    @Override
+                    public void onEvent(int type, BaseTween<?> source) {
+                        Tween.to(mode, Tweens.ALPHA, 1f) .target(0) .ease(TweenEquations.easeInBack)
+                                .start(screen.tweenManager);
+                    }
+                })
+                .start(screen.tweenManager);
     }
 
 }
