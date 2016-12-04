@@ -50,8 +50,10 @@ public class TestGameScreen extends BaseScreen {
         uiStage.addActor(hud);
 
         // Setup game objects
+        float vehicleX = this.gameCamera.viewportWidth / 2;
+        float vehicleY = this.gameCamera.viewportHeight / 2;
         vehicle = new Vehicle(this.game, this.physicsWorld, 1.2f, 2.4f,
-                new Vector2(10, 10), (float) Math.PI * 0.5f, 60, 15, 25, 80);
+                new Vector2(vehicleX, vehicleY), (float) Math.PI * 0.5f, 60, 15, 25, 80);
         this.engine.addEntity(vehicle);
 
         // Setup middleman that deals with google play services
