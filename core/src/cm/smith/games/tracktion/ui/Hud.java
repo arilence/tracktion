@@ -40,7 +40,7 @@ public class Hud extends Stack {
     public UIImageButton turnRightButton;
     public UIImageButton accelerateButton;
 
-    public Hud(MainGame game) {
+    public Hud(MainGame game, GameController.ROLE role) {
         secondsFormatter = new DecimalFormat("00");
         // TODO: setup milliformatter to show the milliseconds roll by
 
@@ -49,6 +49,14 @@ public class Hud extends Stack {
         isAccelerateDown = false;
 
         this.game = game;
+        setupBaseHud();
+
+        if (role == GameController.ROLE.DRIVER) {
+            setupDriverHud();
+        }
+        else {
+            setupBuilderHud();
+        }
     }
 
     public void setupBaseHud() {

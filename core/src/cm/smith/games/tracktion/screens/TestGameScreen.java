@@ -1,5 +1,6 @@
 package cm.smith.games.tracktion.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,8 +12,14 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.BooleanArray;
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.Arrays;
 
 import cm.smith.games.tracktion.MainGame;
+import cm.smith.games.tracktion.Packet;
 import cm.smith.games.tracktion.controllers.GameController;
 import cm.smith.games.tracktion.entities.Vehicle;
 import cm.smith.games.tracktion.systems.RenderingSystem;
@@ -34,29 +41,24 @@ public class TestGameScreen extends BaseScreen {
 
     public TestGameScreen(MainGame game, GameController.ROLE role) {
         super(game);
-        gameController = new GameController();
-        gameController.setRole(role);
 
-        game.playServices.setGameManager(gameController);
-
-        // Add systems to engine
+        // Add systems to ashley ECS engine
         this.engine.addSystem(new RenderingSystem(this.game.gameBatch));
+
+        // Setup HUD
+        hud = new Hud(this.game, role);
+        uiStage.addActor(hud);
 
         // Setup game objects
         vehicle = new Vehicle(this.game, this.physicsWorld, 1.2f, 2.4f,
                 new Vector2(10, 10), (float) Math.PI * 0.5f, 60, 15, 25, 80);
         this.engine.addEntity(vehicle);
 
-        // Setup HUD
-        hud = new Hud(this.game);
-        hud.setupBaseHud();
-        if (gameController.getRole() == GameController.ROLE.DRIVER) {
-            hud.setupDriverHud();
-        }
-        else if (gameController.getRole() == GameController.ROLE.BUILDER) {
-            hud.setupBuilderHud();
-        }
-        uiStage.addActor(hud);
+        // Setup middleman that deals with google play services
+        gameController = new GameController(role, vehicle, hud);
+        game.multiplayerServices.setGameManager(gameController);
+
+        game.multiplayerServices.findGame(role.getValue());
     }
 
     @Override
@@ -68,46 +70,48 @@ public class TestGameScreen extends BaseScreen {
     public void render(float delta) {
         super.render(delta);
 
-        // Update the game camera
-        float newX = (vehicle.transformComponent.pos.x - this.gameCamera.position.x) * LERP * delta;
-        float newY = (vehicle.transformComponent.pos.y - this.gameCamera.position.y) * LERP * delta;
-        this.gameCamera.translate(newX, newY);
+        if (gameController.isGameRunning) {
+            this.game.multiplayerServices.broadcastMessage();
 
-        switch(gameController.getState()) {
-            case PRE_GAME:
-                updatePreGame(delta);
-                break;
+            // Update the game camera
+            float newX = (vehicle.transformComponent.pos.x - this.gameCamera.position.x) * LERP * delta;
+            float newY = (vehicle.transformComponent.pos.y - this.gameCamera.position.y) * LERP * delta;
+            this.gameCamera.translate(newX, newY);
 
-            case PLAYING:
-                updatePlaying(delta);
-                break;
+            switch (gameController.getState()) {
+                case PRE_GAME:
+                    updatePreGame(delta);
+                    break;
 
-            case DEAD:
-                updateDead(delta);
-                break;
+                case PLAYING:
+                    updatePlaying(delta);
+                    break;
 
-            case GAME_OVER:
-                updateGameOver(delta);
-                break;
+                case DEAD:
+                    updateDead(delta);
+                    break;
+
+                case GAME_OVER:
+                    updateGameOver(delta);
+                    break;
+            }
         }
     }
 
     private void updatePreGame(float delta) {
         gameController.updatePreGame(delta);
-        hud.updateTimer(gameController.getTimer());
+        hud.updateTimer(gameController.time);
     }
 
     private void updatePlaying(float delta) {
         gameController.updatePlaying(delta);
-        hud.updateTimer(gameController.getTimer());
+        hud.updateTimer(gameController.time);
 
         if (hud.isLeftDown) {
             vehicle.setSteer(Vehicle.STEER_LEFT);
-            Gdx.app.log("VEHICLE", "LEFT");
         }
         else if (hud.isRightDown) {
             vehicle.setSteer(Vehicle.STEER_RIGHT);
-            Gdx.app.log("VEHICLE", "RIGHT");
         }
         else {
             vehicle.setSteer(Vehicle.STEER_NONE);
@@ -115,7 +119,6 @@ public class TestGameScreen extends BaseScreen {
 
         if (hud.isAccelerateDown) {
             vehicle.setAccelerate(Vehicle.ACC_ACCELERATE);
-            Gdx.app.log("VEHICLE", "ACCELERATE");
         }
         else {
             vehicle.setAccelerate(Vehicle.ACC_NONE);
@@ -126,11 +129,11 @@ public class TestGameScreen extends BaseScreen {
 
     private void updateDead(float delta) {
         gameController.updateDead(delta);
-        hud.updateTimer(gameController.getTimer());
+        hud.updateTimer(gameController.time);
     }
 
     private void updateGameOver(float delta) {
         gameController.updateGameOver(delta);
-        hud.updateTimer(gameController.getTimer());
+        hud.updateTimer(gameController.time);
     }
 }

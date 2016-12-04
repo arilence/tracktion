@@ -37,6 +37,7 @@ public class Vehicle extends Entity {
     private int steer, accelerate;
     public List<Wheel> wheels;
     private boolean isAccelerating;
+    private boolean isDead;
 
     public static final int STEER_NONE=0;
     public static final int STEER_LEFT=1;
@@ -67,6 +68,7 @@ public class Vehicle extends Entity {
         add(transformComponent);
 
         this.isAccelerating = false;
+        this.isDead = false;
 
         this.steer = STEER_NONE;
         this.accelerate = ACC_NONE;
@@ -238,4 +240,7 @@ public class Vehicle extends Entity {
         this.accelerate = value;
     }
 
+    public boolean isDead() {
+        return this.isDead;
+    }
 }

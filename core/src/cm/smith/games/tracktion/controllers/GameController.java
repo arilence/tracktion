@@ -1,6 +1,10 @@
 package cm.smith.games.tracktion.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cm.smith.games.tracktion.entities.Vehicle;
+import cm.smith.games.tracktion.ui.Hud;
 
 /**
  * Created by anthony on 2016-09-18.
@@ -14,15 +18,42 @@ public class GameController {
         private final long role;
         ROLE(long role) { this.role = role; }
         public long getValue() { return role; }
+        private static final Map<Long, ROLE> lookup = new HashMap<Long, ROLE>();
+
+        static {
+            for (ROLE d : ROLE.values()) {
+                lookup.put(d.getValue(), d);
+            }
+        }
+
+        public static ROLE get(long abbreviation) {
+            return lookup.get(abbreviation);
+        }
     }
 
     public enum STATE {
-        PRE_GAME,
-        PLAYING,
-        DEAD,
-        GAME_OVER
+        PRE_GAME((byte)'P'),
+        PLAYING((byte)'L'),
+        DEAD((byte)'D'),
+        GAME_OVER((byte)'G');
+
+        private final byte state;
+        STATE(byte state) { this.state = state; }
+        public byte getValue() { return state; }
+        private static final Map<Byte, STATE> lookup = new HashMap<Byte, STATE>();
+
+        static {
+            for (STATE d : STATE.values()) {
+                lookup.put(d.getValue(), d);
+            }
+        }
+
+        public static STATE get(byte abbreviation) {
+            return lookup.get(abbreviation);
+        }
     }
 
+    public boolean isGameRunning;
     private STATE currentState;
     private ROLE currentRole;
     private boolean firstTimeState;     // tracks the first time update of state
@@ -33,48 +64,53 @@ public class GameController {
     private static float TIME_GAMEOVER = 30f;
 
     // Store all of the network shared entities in the controller
-    private float time = 0f;    // time left for the current state
-    private Vehicle vehicle;
+    public float time = 0f;    // time left for the current state
+    public Vehicle vehicle;
+    public Hud hud;
 
-    public GameController() {
+    public GameController(ROLE role, Vehicle vehicle, Hud hud) {
+        isGameRunning = false;
         currentState = STATE.PRE_GAME;
         firstTimeState = true;
-    }
 
-    public void setRole(ROLE role) {
         this.currentRole = role;
+        this.vehicle = vehicle;
+        this.hud = hud;
     }
 
-    public ROLE getRole() { return this.currentRole; }
+    public ROLE getRole() {
+        return this.currentRole;
+    }
 
     public STATE getState() {
         return this.currentState;
     }
 
-    public float getTimer() {
-        return this.time;
-    }
-
     public void updatePreGame(float delta) {
+        time -= delta;
         if (firstTimeState) {
             time = TIME_PREGAME;
             firstTimeState = false;
         }
         if (time <= 0) {
             currentState = STATE.PLAYING;
+            firstTimeState = true;
         }
-        time -= delta;
     }
 
     public void updatePlaying(float delta) {
+        time += delta;
         if (firstTimeState) {
             time = TIME_PLAYING;
             firstTimeState = false;
         }
-        time += delta;
+        if (vehicle.isDead()) {
+            currentState = STATE.DEAD;
+        }
     }
 
     public void updateDead(float delta) {
+        time -= delta;
         if (firstTimeState) {
             time = TIME_DEAD;
             firstTimeState = false;
@@ -82,15 +118,14 @@ public class GameController {
         if (time <= 0) {
             currentState = STATE.GAME_OVER;
         }
-        time -= delta;
     }
 
     public void updateGameOver(float delta) {
+        time -= delta;
         if (firstTimeState) {
             time = TIME_GAMEOVER;
             firstTimeState = false;
         }
-        time -= delta;
     }
 
 }

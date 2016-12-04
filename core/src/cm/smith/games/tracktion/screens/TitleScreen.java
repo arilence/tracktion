@@ -33,10 +33,10 @@ public class TitleScreen extends BaseScreen {
     public void show() {
         super.show();
 
-//        if (!game.playServices.isSignedIn()) {
-//            game.playServices.signIn();
-//            game.playServices.connectOnline();
-//        }
+        if (!game.playServices.isSignedIn()) {
+            game.playServices.signIn();
+            game.playServices.connectOnline();
+        }
 
         setupUiElements();
         configureUiContainers();
@@ -64,12 +64,7 @@ public class TitleScreen extends BaseScreen {
         builderBtn = LabelButton.makeButton(this.game, "play as builder", new LabelButton.Callback() {
             @Override
             public void onClick() {
-                // try to initiate finding a game
-                if (!game.playServices.isSignedIn()) {
-                    game.playServices.signIn();
-                }
-                game.playServices.connectOnline();
-                game.playServices.findGame(GameController.ROLE.DRIVER.getValue());
+                TitleScreen.this.transitionOutScreen(new TestGameScreen(TitleScreen.this.game, GameController.ROLE.BUILDER));
             }
         });
         builderBtn.setInvisible(true);
@@ -93,7 +88,7 @@ public class TitleScreen extends BaseScreen {
         achievementsButton = LabelButton.makeButton(this.game, "achievements", 30, new LabelButton.Callback() {
             @Override
             public void onClick() {
-                TitleScreen.this.game.playServices.showAchievements();
+                game.playServices.showAchievements();
             }
         });
         achievementsButton.setInvisible(true);

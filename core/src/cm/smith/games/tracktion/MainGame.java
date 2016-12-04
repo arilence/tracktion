@@ -19,10 +19,12 @@ public class MainGame extends Game {
     public SpriteBatch gameBatch;
     public BitmapFont font;
     public PlayServices playServices;
+    public MultiplayerServices multiplayerServices;
     public AssetManager assetManager;
 
-    public MainGame(PlayServices playServices) {
+    public MainGame(PlayServices playServices, MultiplayerServices multiplayerServices) {
         this.playServices = playServices;
+        this.multiplayerServices = multiplayerServices;
     }
 
 	@Override
