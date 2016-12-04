@@ -142,17 +142,6 @@ public class MultiplayerAdapter implements MultiplayerServices, RoomUpdateListen
                     this.gameController.time = incomingTime;
                 }
 
-                int isAccelerating = (incomingPacket.isAccelerating) ? Vehicle.ACC_ACCELERATE : Vehicle.ACC_NONE;
-                this.gameController.vehicle.setAccelerate(isAccelerating);
-
-                if (incomingPacket.isTurningLeft) {
-                    this.gameController.vehicle.setAccelerate(Vehicle.STEER_LEFT);
-                } else if (incomingPacket.isTurningRight) {
-                    this.gameController.vehicle.setAccelerate(Vehicle.STEER_RIGHT);
-                } else {
-                    this.gameController.vehicle.setAccelerate(Vehicle.STEER_NONE);
-                }
-
                 this.gameController.vehicle.body.setTransform(incomingPacket.vehiclePosX, incomingPacket.vehiclePosY, incomingPacket.vehicleHeading);
                 this.gameController.vehicle.body.setLinearVelocity(incomingPacket.vehicleVelX, incomingPacket.vehicleVelY);
             }
