@@ -107,21 +107,20 @@ public class TestGameScreen extends BaseScreen {
         gameController.updatePlaying(delta);
         hud.updateTimer(gameController.time);
 
-        if (hud.isLeftDown) {
-            vehicle.setSteer(Vehicle.STEER_LEFT);
-        }
-        else if (hud.isRightDown) {
-            vehicle.setSteer(Vehicle.STEER_RIGHT);
-        }
-        else {
-            vehicle.setSteer(Vehicle.STEER_NONE);
-        }
+        if (gameController.getRole() == GameController.ROLE.DRIVER) {
+            if (hud.isLeftDown) {
+                vehicle.setSteer(Vehicle.STEER_LEFT);
+            } else if (hud.isRightDown) {
+                vehicle.setSteer(Vehicle.STEER_RIGHT);
+            } else {
+                vehicle.setSteer(Vehicle.STEER_NONE);
+            }
 
-        if (hud.isAccelerateDown) {
-            vehicle.setAccelerate(Vehicle.ACC_ACCELERATE);
-        }
-        else {
-            vehicle.setAccelerate(Vehicle.ACC_NONE);
+            if (hud.isAccelerateDown) {
+                vehicle.setAccelerate(Vehicle.ACC_ACCELERATE);
+            } else {
+                vehicle.setAccelerate(Vehicle.ACC_NONE);
+            }
         }
 
         vehicle.update(delta);

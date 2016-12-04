@@ -49,6 +49,7 @@ public class Hud extends Stack {
         isAccelerateDown = false;
 
         this.game = game;
+        setFillParent(true);
         setupBaseHud();
 
         if (role == GameController.ROLE.DRIVER) {
@@ -66,7 +67,7 @@ public class Hud extends Stack {
         timeTable.setFillParent(true);
 
         timeTable.add(time).top();
-        add(timeTable);
+        add(timeTable.top());
     }
 
     public void setupDriverHud() {
@@ -131,7 +132,6 @@ public class Hud extends Stack {
                 .padRight(80 * BaseScreen.SCALE_X)
                 .padBottom(90 * BaseScreen.SCALE_Y));
 
-        setFillParent(true);
         add(gearbox.bottom().right());
         add(turningTable.bottom().left());
     }
