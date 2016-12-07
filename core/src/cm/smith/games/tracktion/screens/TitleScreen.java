@@ -1,5 +1,6 @@
 package cm.smith.games.tracktion.screens;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
@@ -10,6 +11,9 @@ import aurelienribon.tweenengine.TweenEquations;
 import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.Tweens;
 import cm.smith.games.tracktion.controllers.GameController;
+import cm.smith.games.tracktion.entities.GameBoard;
+import cm.smith.games.tracktion.entities.Vehicle;
+import cm.smith.games.tracktion.ui.Hud;
 import cm.smith.games.tracktion.ui.LabelButton;
 import cm.smith.games.tracktion.ui.UILabel;
 
@@ -64,7 +68,12 @@ public class TitleScreen extends BaseScreen {
         builderBtn = LabelButton.makeButton(this.game, "play as builder", new LabelButton.Callback() {
             @Override
             public void onClick() {
-                TitleScreen.this.transitionOutScreen(new TestGameScreen(TitleScreen.this.game, GameController.ROLE.BUILDER));
+                Hud hud = new Hud(TitleScreen.this, GameController.ROLE.DRIVER);
+                Vehicle vehicle = new Vehicle(TitleScreen.this.game, TitleScreen.this.physicsWorld, 1.2f, 2.4f,
+                        new Vector2(0, 0), (float) Math.PI * 0.5f, 60, 15, 25, 80);
+                GameBoard board = new GameBoard(TitleScreen.this);
+                //TitleScreen.this.transitionOutScreen(new TestGameScreen(TitleScreen.this.game, GameController.ROLE.BUILDER));
+                TitleScreen.this.transitionOutScreen(new GameOverScreen(TitleScreen.this.game, new GameController(GameController.ROLE.DRIVER, vehicle, hud, board)));
             }
         });
         builderBtn.setInvisible(true);
