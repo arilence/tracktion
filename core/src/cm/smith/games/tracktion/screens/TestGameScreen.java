@@ -5,6 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -21,6 +23,7 @@ import java.util.Arrays;
 import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.Packet;
 import cm.smith.games.tracktion.controllers.GameController;
+import cm.smith.games.tracktion.entities.GameBoard;
 import cm.smith.games.tracktion.entities.Vehicle;
 import cm.smith.games.tracktion.systems.RenderingSystem;
 import cm.smith.games.tracktion.ui.Hud;
@@ -38,6 +41,8 @@ public class TestGameScreen extends BaseScreen {
     private GameController gameController;
     private Vehicle vehicle;
     private Hud hud;
+    private GameBoard gameBoard;
+    private TiledMapRenderer gameBoardRenderer;
 
     public TestGameScreen(MainGame game, GameController.ROLE role) {
         super(game);
@@ -56,8 +61,11 @@ public class TestGameScreen extends BaseScreen {
                 new Vector2(vehicleX, vehicleY), (float) Math.PI * 0.5f, 60, 15, 25, 80);
         this.engine.addEntity(vehicle);
 
+        gameBoard = new GameBoard(this);
+        gameBoardRenderer = new OrthogonalTiledMapRenderer(gameBoard, 1 / (float)BaseScreen.PIXELS_PER_METER);
+
         // Setup middleman that deals with google play services
-        gameController = new GameController(role, vehicle, hud);
+        gameController = new GameController(role, vehicle, hud, gameBoard);
         game.multiplayerServices.setGameManager(gameController);
 
         game.multiplayerServices.findGame(role.getValue());
@@ -98,6 +106,13 @@ public class TestGameScreen extends BaseScreen {
                     break;
             }
         }
+
+    }
+
+    @Override
+    public void renderBefore(float delta) {
+        gameBoardRenderer.setView(this.gameCamera);
+        gameBoardRenderer.render();
     }
 
     private void updatePreGame(float delta) {

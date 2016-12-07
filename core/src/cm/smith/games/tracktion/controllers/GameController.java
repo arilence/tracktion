@@ -3,6 +3,7 @@ package cm.smith.games.tracktion.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import cm.smith.games.tracktion.entities.GameBoard;
 import cm.smith.games.tracktion.entities.Vehicle;
 import cm.smith.games.tracktion.ui.Hud;
 
@@ -64,11 +65,12 @@ public class GameController {
     private static float TIME_GAMEOVER = 30f;
 
     // Store all of the network shared entities in the controller
-    public float time = 0f;    // time left for the current state
+    public float time = TIME_PREGAME;    // time left for the current state
     public Vehicle vehicle;
     public Hud hud;
+    public GameBoard gameBoard;
 
-    public GameController(ROLE role, Vehicle vehicle, Hud hud) {
+    public GameController(ROLE role, Vehicle vehicle, Hud hud, GameBoard gameBoard) {
         isGameRunning = false;
         currentState = STATE.PRE_GAME;
         firstTimeState = true;
@@ -76,6 +78,7 @@ public class GameController {
         this.currentRole = role;
         this.vehicle = vehicle;
         this.hud = hud;
+        this.gameBoard = gameBoard;
     }
 
     public ROLE getRole() {

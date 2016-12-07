@@ -34,7 +34,7 @@ public abstract class BaseScreen implements Screen {
             (float)Gdx.graphics.getHeight()/MainGame.VIEW_HEIGHT;
 
     /** Used for Box2D Physics engine */
-    public static final int PIXELS_PER_METER=48;
+    public static final int PIXELS_PER_METER = 48;
 
     /** Used for Box2D Physics engine */
     public final static float STEP_TIME = 1.0f / 60.0f;
@@ -88,6 +88,8 @@ public abstract class BaseScreen implements Screen {
         Gdx.gl.glClearColor(Colors.GL_CLEAR_COLOR[0], Colors.GL_CLEAR_COLOR[1], Colors.GL_CLEAR_COLOR[2], Colors.GL_CLEAR_COLOR[3]);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        renderBefore(delta);
+
         camera.update();
         game.uiBatch.setProjectionMatrix(camera.combined);
         gameCamera.update();
@@ -101,6 +103,8 @@ public abstract class BaseScreen implements Screen {
         // TODO: remove debug physics renderer
         //debugPhysicsRenderer.render(physicsWorld, gameCamera.combined);
     }
+
+    public void renderBefore(float delta) {}
 
     private void doPhysicsStep(float deltaTime) {
         // fixed time step

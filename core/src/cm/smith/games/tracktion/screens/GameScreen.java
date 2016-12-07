@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import cm.smith.games.tracktion.controllers.GameController;
 import cm.smith.games.tracktion.MainGame;
+import cm.smith.games.tracktion.entities.GameBoard;
 import cm.smith.games.tracktion.entities.Vehicle;
 import cm.smith.games.tracktion.ui.Hud;
 
@@ -28,8 +29,9 @@ public class GameScreen extends BaseScreen {
                 new Vector2(10, 10), (float) Math.PI * 0.5f, 60, 15, 25, 80);
 
         Hud hud = new Hud(this, GameController.ROLE.DRIVER);
+        GameBoard gameBoard = new GameBoard(this);
 
-        gameController = new GameController(GameController.ROLE.DRIVER, vehicle, hud);
+        gameController = new GameController(GameController.ROLE.DRIVER, vehicle, hud, gameBoard);
         game.multiplayerServices.setGameManager(gameController);
 
         // try to initiate finding a game
