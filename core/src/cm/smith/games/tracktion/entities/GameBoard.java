@@ -13,21 +13,20 @@ import cm.smith.games.tracktion.screens.BaseScreen;
 
 public class GameBoard extends TiledMap{
 
-    public static final int WORLD_WIDTH = 100;
-    public static final int WORLD_HEIGHT = 100;
+    public static final int WORLD_WIDTH = 1000;
+    public static final int WORLD_HEIGHT = 1000;
     public static final int WATER_TILE_WIDTH = 128;
     public static final int WATER_TILE_HEIGHT = 128;
     public static final int PLATFORM_TILE_WIDTH = 0;
     public static final int PLATFORM_TILE_HEIGHT = 0;
 
     private BaseScreen screen;
-    private MapLayers boardLayers;
-    private TiledMapTileLayer waterLayer;
-    private TiledMapTileLayer platformLayer;
+    public MapLayers boardLayers;
+    public TiledMapTileLayer waterLayer;
+    public TiledMapTileLayer platformLayer;
 
     public GameBoard(BaseScreen screen) {
         this.screen = screen;
-
         boardLayers = getLayers();
 
         waterLayer = new TiledMapTileLayer(WORLD_WIDTH, WORLD_HEIGHT, WATER_TILE_WIDTH, WATER_TILE_HEIGHT);

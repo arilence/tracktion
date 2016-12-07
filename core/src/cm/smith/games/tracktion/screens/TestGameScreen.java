@@ -54,15 +54,14 @@ public class TestGameScreen extends BaseScreen {
         hud = new Hud(this, role);
         uiStage.addActor(hud);
 
-        // Setup game objects
-        float vehicleX = this.gameCamera.viewportWidth / 2;
-        float vehicleY = this.gameCamera.viewportHeight / 2;
+        gameBoard = new GameBoard(this);
+        gameBoardRenderer = new OrthogonalTiledMapRenderer(gameBoard, 1 / (float)BaseScreen.PIXELS_PER_METER);
+
+        float vehicleX = this.gameCamera.viewportWidth / 2 + gameBoard.waterLayer.getWidth() / 2;
+        float vehicleY = this.gameCamera.viewportHeight / 2 + gameBoard.waterLayer.getHeight() / 2;
         vehicle = new Vehicle(this.game, this.physicsWorld, 1.2f, 2.4f,
                 new Vector2(vehicleX, vehicleY), (float) Math.PI * 0.5f, 60, 15, 25, 80);
         this.engine.addEntity(vehicle);
-
-        gameBoard = new GameBoard(this);
-        gameBoardRenderer = new OrthogonalTiledMapRenderer(gameBoard, 1 / (float)BaseScreen.PIXELS_PER_METER);
 
         // Setup middleman that deals with google play services
         gameController = new GameController(role, vehicle, hud, gameBoard);
