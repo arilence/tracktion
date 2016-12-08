@@ -25,6 +25,7 @@ import cm.smith.games.tracktion.Packet;
 import cm.smith.games.tracktion.controllers.GameController;
 import cm.smith.games.tracktion.entities.GameBoard;
 import cm.smith.games.tracktion.entities.Vehicle;
+import cm.smith.games.tracktion.systems.AnimationSystem;
 import cm.smith.games.tracktion.systems.RenderingSystem;
 import cm.smith.games.tracktion.ui.Hud;
 import cm.smith.games.tracktion.ui.LabelButton;
@@ -49,6 +50,7 @@ public class GameScreen extends BaseScreen {
 
         // Add systems to ashley ECS engine
         this.engine.addSystem(new RenderingSystem(this.game.gameBatch));
+        this.engine.addSystem(new AnimationSystem());
 
         // Setup HUD
         hud = new Hud(this, role);

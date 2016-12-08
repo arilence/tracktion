@@ -3,6 +3,7 @@ package cm.smith.games.tracktion.entities;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cm.smith.games.tracktion.MainGame;
+import cm.smith.games.tracktion.components.AnimationComponent;
+import cm.smith.games.tracktion.components.StateComponent;
 import cm.smith.games.tracktion.components.TextureComponent;
 import cm.smith.games.tracktion.components.TransformComponent;
 import cm.smith.games.tracktion.screens.BaseScreen;
@@ -52,6 +55,8 @@ public class Vehicle extends Entity {
     // Components
     public TextureComponent textureComponent;
     public TransformComponent transformComponent;
+    public StateComponent stateComponent;
+    public AnimationComponent animationComponent;
 
     public Vehicle(MainGame game, World world, float width, float length, Vector2 position,
                    float angle, float power, float minSteerAngle, float maxSteerAngle, float maxSpeed) {
@@ -66,6 +71,34 @@ public class Vehicle extends Entity {
         transformComponent = new TransformComponent();
         add(textureComponent);
         add(transformComponent);
+
+        Texture explosionTexture = game.assetManager.get("vehicle-explosion.png", Texture.class);
+        Animation explodeAnim = new Animation(0.1f,
+                new TextureRegion(explosionTexture, 0, 0, 128, 128),
+                new TextureRegion(explosionTexture, 128, 0, 128, 128),
+                new TextureRegion(explosionTexture, 256, 0, 128, 128),
+                new TextureRegion(explosionTexture, 384, 0, 128, 128),
+
+                new TextureRegion(explosionTexture, 0, 128, 128, 128),
+                new TextureRegion(explosionTexture, 128, 128, 128, 128),
+                new TextureRegion(explosionTexture, 256, 128, 128, 128),
+                new TextureRegion(explosionTexture, 384, 128, 128, 128),
+
+                new TextureRegion(explosionTexture, 0, 256, 128, 128),
+                new TextureRegion(explosionTexture, 128, 256, 128, 128),
+                new TextureRegion(explosionTexture, 256, 256, 128, 128),
+                new TextureRegion(explosionTexture, 384, 256, 128, 128),
+
+                new TextureRegion(explosionTexture, 0, 384, 128, 128),
+                new TextureRegion(explosionTexture, 128, 384, 128, 128),
+                new TextureRegion(explosionTexture, 256, 384, 128, 128));
+        animationComponent = new AnimationComponent();
+        animationComponent.animations.put(1, explodeAnim);
+        add(animationComponent);
+
+        stateComponent = new StateComponent();
+        stateComponent.set(0);
+        add(stateComponent);
 
         this.isAccelerating = false;
         this.isDead = false;
@@ -244,5 +277,10 @@ public class Vehicle extends Entity {
         return this.isDead;
     }
 
-    public void setDead(boolean value) { this.isDead = value; }
+    public void setDead(boolean value) {
+        this.isDead = value;
+        if (value) {
+            this.stateComponent.set(1);
+        }
+    }
 }
