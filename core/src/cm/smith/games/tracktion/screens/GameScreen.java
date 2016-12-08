@@ -1,36 +1,17 @@
 package cm.smith.games.tracktion.screens;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.BooleanArray;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.util.Arrays;
 
 import cm.smith.games.tracktion.MainGame;
-import cm.smith.games.tracktion.Packet;
 import cm.smith.games.tracktion.controllers.GameController;
 import cm.smith.games.tracktion.entities.GameBoard;
+import cm.smith.games.tracktion.entities.TrackSegment;
 import cm.smith.games.tracktion.entities.Vehicle;
 import cm.smith.games.tracktion.systems.AnimationSystem;
 import cm.smith.games.tracktion.systems.RenderingSystem;
 import cm.smith.games.tracktion.ui.Hud;
-import cm.smith.games.tracktion.ui.LabelButton;
-import cm.smith.games.tracktion.ui.UIImageButton;
-import javafx.geometry.Bounds;
 
 /**
  * Created by anthony on 2016-11-03.
@@ -63,10 +44,19 @@ public class GameScreen extends BaseScreen {
         float vehicleY = this.gameCamera.viewportHeight / 2 + gameBoard.waterLayer.getHeight() / 2;
         vehicle = new Vehicle(this.game, this.physicsWorld, 1.2f, 2.4f,
                 new Vector2(vehicleX, vehicleY), (float) Math.PI * 0.5f, 60, 15, 25, 80);
-        this.engine.addEntity(vehicle);
 
         // Setup middleman that deals with google play services
         gameController = new GameController(role, vehicle, hud, gameBoard);
+
+        // Do some track stuff
+        TrackSegment track01 = new TrackSegment(this.game, vehicleX, vehicleY);
+        TrackSegment track02 = new TrackSegment(this.game, vehicleX + track01.texture.getWidth(), vehicleY);
+        TrackSegment track03 = new TrackSegment(this.game, vehicleX + (track01.texture.getWidth() * 2), vehicleY);
+
+        this.engine.addEntity(track01);
+        this.engine.addEntity(track02);
+        this.engine.addEntity(track03);
+        this.engine.addEntity(vehicle);
     }
 
     @Override

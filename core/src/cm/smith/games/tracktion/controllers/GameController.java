@@ -112,7 +112,7 @@ public class GameController {
         if (firstTimeState) {
             time = TIME_PREGAME;
             firstTimeState = false;
-            hud.playText("Get Ready!");
+            hud.playText("get ready!");
         }
         if (time <= 0) {
             currentState = STATE.PLAYING;
@@ -127,7 +127,7 @@ public class GameController {
             firstTimeState = false;
             hud.playText("GO");
         }
-        if (vehicle.getSpeedKMH() <= 20 && time > 2) {
+        if (getRole() == ROLE.DRIVER && vehicle.getSpeedKMH() <= 20 && time > 2) {
             vehicle.setDead(true);
         }
         if (vehicle.isDead()) {
@@ -142,7 +142,7 @@ public class GameController {
         if (firstTimeState) {
             time = TIME_DEAD;
             firstTimeState = false;
-            hud.playText("Nice try!");
+            hud.playText("nice try!");
         }
         if (time <= 0) {
             currentState = STATE.GAME_OVER;

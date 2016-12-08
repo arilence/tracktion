@@ -1,6 +1,5 @@
 package cm.smith.games.tracktion.entities;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.maps.MapLayers;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -41,7 +40,7 @@ public class GameBoard extends TiledMap{
     public void initializeWater() {
         for (int x = 0; x < WORLD_WIDTH; x++) {
             for (int y = 0; y < WORLD_HEIGHT; y++) {
-                waterLayer.setCell(x, y, new WaterCell(screen.game.assetManager));
+                waterLayer.setCell(x, y, new GrassCell(screen.game.assetManager));
             }
         }
     }

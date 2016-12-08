@@ -51,7 +51,7 @@ public class LoadingScreen extends BaseScreen {
         game.assetManager.load("gamecontrols.png", Texture.class);
         game.assetManager.load("vehicle.png", Texture.class);
         game.assetManager.load("vehicle-explosion.png", Texture.class);
-        game.assetManager.load("waterTile.png", Texture.class);
+        game.assetManager.load("grassTile.png", Texture.class);
         game.assetManager.load("trackTile.png", Texture.class);
     }
 
