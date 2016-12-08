@@ -72,6 +72,10 @@ public class GameScreen extends BaseScreen {
     public void render(float delta) {
         super.render(delta);
 
+        if (gameController.getRole() == GameController.ROLE.BUILDER) {
+            this.gameCamera.zoom = 3f;
+        }
+
         if (gameController.peerFailed) {
             this.gameController.finishedGameTime = this.gameController.time;
             this.gameController.currentState = GameController.STATE.GAME_OVER;
