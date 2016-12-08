@@ -1,5 +1,7 @@
 package cm.smith.games.tracktion.controllers;
 
+import com.badlogic.gdx.Gdx;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -125,10 +127,8 @@ public class GameController {
             firstTimeState = false;
             hud.playText("GO");
         }
-        if (getRole() == ROLE.DRIVER && time > 10) {
-            finishedGameTime = time;
-            currentState = STATE.DEAD;
-            firstTimeState = true;
+        if (vehicle.getSpeedKMH() <= 20 && time > 2) {
+            vehicle.setDead(true);
         }
         if (vehicle.isDead()) {
             finishedGameTime = time;

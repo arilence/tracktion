@@ -121,7 +121,7 @@ public class GameOverScreen extends BaseScreen {
         timeText = UILabel.makeLabel(this.game, "0:00", 75);
         timeText.setInvisible(true);
 
-        gameOverText = UILabel.makeLabel(this.game, newText, 40);
+        gameOverText = UILabel.makeLabel(this.game, newText, 75);
         gameOverText.setInvisible(true);
 
         float time = this.gameController.finishedGameTime;
