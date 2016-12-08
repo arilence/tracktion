@@ -42,7 +42,7 @@ public class MainGame extends Game {
         super.render(); //important!
 
         uiBatch.begin();
-        font.draw(uiBatch, "FPS: " + (1 / Gdx.graphics.getDeltaTime()), 20, 30);
+        //font.draw(uiBatch, "FPS: " + (1 / Gdx.graphics.getDeltaTime()), 20, 30);
         uiBatch.end();
     }
 
