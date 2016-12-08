@@ -1,5 +1,6 @@
 package cm.smith.games.tracktion.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -43,14 +44,14 @@ public class GameScreen extends BaseScreen {
         float vehicleX = this.gameCamera.viewportWidth / 2 + gameBoard.waterLayer.getWidth() / 2;
         float vehicleY = this.gameCamera.viewportHeight / 2 + gameBoard.waterLayer.getHeight() / 2;
         vehicle = new Vehicle(this.game, this.physicsWorld, 1.2f, 2.4f,
-                new Vector2(vehicleX, vehicleY), (float) Math.PI * 0.5f, 60, 15, 25, 80);
+                new Vector2(vehicleX, vehicleY), (float) Math.PI * 0.5f, 60, 15, 25, 45);
 
         // Setup middleman that deals with google play services
         gameController = new GameController(role, vehicle, hud, gameBoard);
 
         // Do some track stuff
         TrackSegment track01 = new TrackSegment(this.game, vehicleX, vehicleY);
-        TrackSegment track02 = new TrackSegment(this.game, vehicleX + track01.texture.getWidth(), vehicleY);
+        TrackSegment track02 = new TrackSegment(this.game, vehicleX + (track01.texture.getWidth() / BaseScreen.PIXELS_PER_METER), vehicleY);
         TrackSegment track03 = new TrackSegment(this.game, vehicleX + (track01.texture.getWidth() * 2), vehicleY);
 
         this.engine.addEntity(track01);
