@@ -62,6 +62,8 @@ public class GameController {
     public boolean sentCrashMsg;
     public boolean shouldDisconnect;
     public boolean sentDisconnectMsg;
+    public boolean restartDriver;
+    public boolean restartBuilder;
 
     private static float TIME_PREGAME = 5f;
     private static float TIME_PLAYING = 0f;
@@ -82,6 +84,8 @@ public class GameController {
         sentCrashMsg = false;
         shouldDisconnect = false;
         sentDisconnectMsg = false;
+        restartDriver = false;
+        restartBuilder = false;
 
         this.currentRole = role;
         this.vehicle = vehicle;

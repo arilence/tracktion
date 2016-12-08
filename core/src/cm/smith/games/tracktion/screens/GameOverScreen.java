@@ -62,7 +62,7 @@ public class GameOverScreen extends BaseScreen {
         }
 
         if (gameController.shouldDisconnect) {
-            this.game.setScreen(new TitleScreen(this.game));
+            GameOverScreen.this.transitionOutScreen(new TitleScreen(this.game));
         }
     }
 
@@ -73,8 +73,26 @@ public class GameOverScreen extends BaseScreen {
     private void updateGameOver(float delta) {
         this.gameController.updateGameOver(delta);
 
+        if (gameController.getRole() == GameController.ROLE.DRIVER) {
+            if (gameController.restartDriver) {
+                retryBtn.setText("- retry? -");
+                menuBtn.setText("return to menu");
+            }
+        }
+
+        if (gameController.getRole() == GameController.ROLE.BUILDER) {
+            if (gameController.restartBuilder) {
+                retryBtn.setText("- retry? -");
+                menuBtn.setText("return to menu");
+            }
+        }
+
         if (gameController.time <= 0) {
-            gameController.shouldDisconnect = true;
+            if (gameController.restartDriver && gameController.restartBuilder) {
+                this.game.setScreen(new GameScreen(this.game, gameController.getRole()));
+            } else {
+                gameController.shouldDisconnect = true;
+            }
         }
     }
 
@@ -88,7 +106,7 @@ public class GameOverScreen extends BaseScreen {
         timeText = UILabel.makeLabel(this.game, "0:00", 75);
         timeText.setInvisible(true);
 
-        gameOverText = UILabel.makeLabel(this.game, "Nice Try!", 75);
+        gameOverText = UILabel.makeLabel(this.game, "nice try!", 75);
         gameOverText.setInvisible(true);
 
         float time = this.gameController.finishedGameTime;
@@ -99,7 +117,12 @@ public class GameOverScreen extends BaseScreen {
         retryBtn = LabelButton.makeButton(this.game, "retry?", new LabelButton.Callback() {
             @Override
             public void onClick() {
-
+                if (gameController.getRole() == GameController.ROLE.DRIVER) {
+                    gameController.restartDriver = true;
+                }
+                if (gameController.getRole() == GameController.ROLE.BUILDER) {
+                    gameController.restartBuilder = true;
+                }
             }
         });
         retryBtn.setInvisible(true);
@@ -107,6 +130,7 @@ public class GameOverScreen extends BaseScreen {
         menuBtn = LabelButton.makeButton(this.game, "return to menu", new LabelButton.Callback() {
             @Override
             public void onClick() {
+                gameController.shouldDisconnect = true;
                 GameOverScreen.this.transitionOutScreen(new TitleScreen(GameOverScreen.this.game));
             }
         });

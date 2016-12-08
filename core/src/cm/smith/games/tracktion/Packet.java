@@ -37,6 +37,7 @@ public class Packet {
     public float vehicleVelX;
     public float vehicleVelY;
     public float vehicleHeading;
+    public boolean voteRetry;
 
     public static byte[] float2ByteArray(float value) {
         return ByteBuffer.allocate(4).putFloat(value).array();
@@ -98,6 +99,8 @@ public class Packet {
             newPacket.vehicleVelX = byte2Float(splitByteArray(data, 32, 39));
             newPacket.vehicleVelY = byte2Float(splitByteArray(data, 40, 47));
             newPacket.vehicleHeading = byte2Float(splitByteArray(data, 48, 55));
+            byte retry = splitByteArray(data, 56, 56)[0];
+            newPacket.voteRetry = (retry == 1);
         }
 
         return newPacket;
@@ -119,6 +122,7 @@ public class Packet {
             byteMsg = insertByteArray(32, byteMsg, float2ByteArray(this.vehicleVelX));
             byteMsg = insertByteArray(40, byteMsg, float2ByteArray(this.vehicleVelY));
             byteMsg = insertByteArray(48, byteMsg, float2ByteArray(this.vehicleHeading));
+            byteMsg[56] = (byte)((voteRetry) ? 1 : 0);
         }
 
         return byteMsg;

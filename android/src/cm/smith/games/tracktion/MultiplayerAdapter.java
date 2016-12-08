@@ -92,6 +92,12 @@ public class MultiplayerAdapter implements MultiplayerServices, RoomUpdateListen
         sendingPacket.vehiclePosY = gameController.vehicle.transformComponent.pos.y;
         sendingPacket.vehicleHeading = gameController.vehicle.body.getAngle();
 
+        if (gameController.getRole() == GameController.ROLE.DRIVER) {
+            sendingPacket.voteRetry = gameController.restartDriver;
+        } else if (gameController.getRole() == GameController.ROLE.BUILDER) {
+            sendingPacket.voteRetry = gameController.restartBuilder;
+        }
+
         msgBuffer = sendingPacket.toBytes();
 
         // Send to every other participant.
@@ -168,10 +174,15 @@ public class MultiplayerAdapter implements MultiplayerServices, RoomUpdateListen
             }
         }
         else if (incomingPacket.state == GameController.STATE.GAME_OVER) {
+            Gdx.app.log("Multiplayer", "GAMEOVER");
             if (incomingPacket.role == GameController.ROLE.DRIVER) {
                 if (this.gameController.time > incomingTime) {
                     this.gameController.time = incomingTime;
                 }
+                this.gameController.restartDriver = incomingPacket.voteRetry;
+            }
+            if (incomingPacket.role == GameController.ROLE.BUILDER) {
+                this.gameController.restartBuilder = incomingPacket.voteRetry;
             }
         }
         else if (incomingPacket.state == GameController.STATE.DISCONNECT) {
