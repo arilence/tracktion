@@ -24,6 +24,8 @@ public class GameOverScreen extends BaseScreen {
     MainGame game;
     GameController gameController;
     DecimalFormat secondsFormatter;
+    String newText;
+    boolean showRetry;
 
     UILabel gameOverText;
     UILabel timeLastedText;
@@ -35,6 +37,21 @@ public class GameOverScreen extends BaseScreen {
         super(game);
         this.game = game;
         this.gameController = gameController;
+        this.newText = "nice try!";
+        this.showRetry = true;
+        setup();
+    }
+
+    public GameOverScreen(MainGame game, GameController gameController, String newText) {
+        super(game);
+        this.game = game;
+        this.gameController = gameController;
+        this.newText = newText;
+        this.showRetry = false;
+        setup();
+    }
+
+    private void setup() {
         secondsFormatter = new DecimalFormat("00");
 
         setupUiElements();
@@ -46,20 +63,18 @@ public class GameOverScreen extends BaseScreen {
     public void render(float delta) {
         super.render(delta);
 
-        if (gameController.isGameRunning) {
-            this.game.multiplayerServices.broadcastMessage();
-            updateTimer(gameController.time);
+        updateTimer(gameController.time);
 
-            switch (gameController.getState()) {
-                case DEAD:
-                    updateDead(delta);
-                    break;
+        switch (gameController.getState()) {
+            case DEAD:
+                updateDead(delta);
+                break;
 
-                case GAME_OVER:
-                    updateGameOver(delta);
-                    break;
-            }
+            case GAME_OVER:
+                updateGameOver(delta);
+                break;
         }
+
 
         if (gameController.shouldDisconnect) {
             GameOverScreen.this.transitionOutScreen(new TitleScreen(this.game));
@@ -106,7 +121,7 @@ public class GameOverScreen extends BaseScreen {
         timeText = UILabel.makeLabel(this.game, "0:00", 75);
         timeText.setInvisible(true);
 
-        gameOverText = UILabel.makeLabel(this.game, "nice try!", 75);
+        gameOverText = UILabel.makeLabel(this.game, newText, 40);
         gameOverText.setInvisible(true);
 
         float time = this.gameController.finishedGameTime;
@@ -157,17 +172,24 @@ public class GameOverScreen extends BaseScreen {
 
         // Configure the two play buttons
         Table buttonTable = new Table();
-        buttonTable.padBottom(100f * BaseScreen.SCALE_Y)
-                .add(retryBtn)
-                .size(512 * SCALE_X, 110 * SCALE_Y)
-                .width(MainGame.VIEW_WIDTH / 2)
-                .align(Align.right);
-        buttonTable.row();
-        buttonTable.padTop(100f * BaseScreen.SCALE_Y)
-                .add(menuBtn)
-                .size(512 * SCALE_X, 110 * SCALE_Y)
-                .width(MainGame.VIEW_WIDTH / 2)
-                .align(Align.right);
+        if (showRetry) {
+            buttonTable.padBottom(100f * BaseScreen.SCALE_Y)
+                    .add(retryBtn)
+                    .size(512 * SCALE_X, 110 * SCALE_Y)
+                    .width(MainGame.VIEW_WIDTH / 2)
+                    .align(Align.right);
+            buttonTable.row();
+            buttonTable.padTop(100f * BaseScreen.SCALE_Y)
+                    .add(menuBtn)
+                    .size(512 * SCALE_X, 110 * SCALE_Y)
+                    .width(MainGame.VIEW_WIDTH / 2)
+                    .align(Align.right);
+        } else {
+            buttonTable.add(menuBtn)
+                    .size(512 * SCALE_X, 110 * SCALE_Y)
+                    .width(MainGame.VIEW_WIDTH / 2)
+                    .align(Align.right);
+        }
 
         // Place game logo and two play buttons side by side
         Table horGroup = new Table();

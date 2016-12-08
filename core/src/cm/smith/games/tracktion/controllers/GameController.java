@@ -56,19 +56,21 @@ public class GameController {
     }
 
     public boolean isGameRunning;
-    private STATE currentState;
+    public STATE currentState;
     private ROLE currentRole;
-    private boolean firstTimeState;     // tracks the first time update of state
+    public boolean firstTimeState;     // tracks the first time update of state
     public boolean sentCrashMsg;
     public boolean shouldDisconnect;
     public boolean sentDisconnectMsg;
     public boolean restartDriver;
     public boolean restartBuilder;
+    public boolean peerDisconnected;
+    public boolean peerFailed;
 
-    private static float TIME_PREGAME = 5f;
-    private static float TIME_PLAYING = 0f;
-    private static float TIME_DEAD = 3f;
-    private static float TIME_GAMEOVER = 20f;
+    public static float TIME_PREGAME = 5f;
+    public static float TIME_PLAYING = 0f;
+    public static float TIME_DEAD = 3f;
+    public static float TIME_GAMEOVER = 20f;
 
     // Store all of the network shared entities in the controller
     public float time = TIME_PREGAME;    // time left for the current state
@@ -86,6 +88,8 @@ public class GameController {
         sentDisconnectMsg = false;
         restartDriver = false;
         restartBuilder = false;
+        peerDisconnected = false;
+        peerFailed = false;
 
         this.currentRole = role;
         this.vehicle = vehicle;

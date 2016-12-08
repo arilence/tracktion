@@ -9,5 +9,6 @@ public interface MultiplayerServices {
     void setGameManager(cm.smith.games.tracktion.controllers.GameController game);
     void findGame(long role);
     void broadcastMessage();
+    void disconnect();
 
 }

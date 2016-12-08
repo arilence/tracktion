@@ -58,6 +58,11 @@ public class MultiplayerAdapter implements MultiplayerServices, RoomUpdateListen
     }
 
     @Override
+    public void disconnect() {
+        gameHelper.disconnect();
+    }
+
+    @Override
     public void setGameManager(cm.smith.games.tracktion.controllers.GameController game) {
         this.gameController = game;
     }
@@ -196,6 +201,7 @@ public class MultiplayerAdapter implements MultiplayerServices, RoomUpdateListen
     public void onRoomCreated(int statusCode, Room room) {
         if (statusCode != GamesStatusCodes.STATUS_OK) {
             // TODO: show error message, return to main screen.
+            gameController.peerFailed = true;
         }
 
         Gdx.app.log("Multiplayer", "onRoomCreated");
@@ -210,6 +216,7 @@ public class MultiplayerAdapter implements MultiplayerServices, RoomUpdateListen
     public void onJoinedRoom(int statusCode, Room room) {
         if (statusCode != GamesStatusCodes.STATUS_OK) {
             // TODO: show error message, return to main screen.
+            gameController.peerFailed = true;
         }
 
         Gdx.app.log("Multiplayer", "onJoinedRoom");
@@ -287,6 +294,7 @@ public class MultiplayerAdapter implements MultiplayerServices, RoomUpdateListen
         roomId = null;
 
         // TODO: player left, stop game
+        gameController.peerDisconnected = true;
     }
 
     @Override
@@ -301,6 +309,7 @@ public class MultiplayerAdapter implements MultiplayerServices, RoomUpdateListen
         updateRoom(room);
 
         // TODO: player left, stop game
+        gameController.peerDisconnected = true;
     }
 
     @Override
@@ -313,5 +322,6 @@ public class MultiplayerAdapter implements MultiplayerServices, RoomUpdateListen
         Gdx.app.log("Multiplayer", "onP2PDisconnected");
 
         // TODO: player left, stop game
+        gameController.peerDisconnected = true;
     }
 }

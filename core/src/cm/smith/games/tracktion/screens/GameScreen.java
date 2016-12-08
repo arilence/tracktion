@@ -79,7 +79,21 @@ public class GameScreen extends BaseScreen {
     public void render(float delta) {
         super.render(delta);
 
-        if (gameController.isGameRunning) {
+        if (gameController.peerFailed) {
+            this.gameController.finishedGameTime = this.gameController.time;
+            this.gameController.currentState = GameController.STATE.GAME_OVER;
+            this.gameController.firstTimeState = true;
+            this.gameController.time = GameController.TIME_DEAD;
+            this.game.setScreen(new TitleScreen(this.game));
+        }
+        else if (gameController.peerDisconnected) {
+            this.gameController.finishedGameTime = this.gameController.time;
+            this.gameController.currentState = GameController.STATE.GAME_OVER;
+            this.gameController.firstTimeState = true;
+            this.gameController.time = GameController.TIME_DEAD;
+            this.game.setScreen(new GameOverScreen(this.game, this.gameController, "Peer Left"));
+        }
+        else if (gameController.isGameRunning) {
             this.game.multiplayerServices.broadcastMessage();
 
             // Update the game camera

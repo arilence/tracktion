@@ -24,6 +24,7 @@ import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.Tweens;
 import cm.smith.games.tracktion.controllers.GameController;
 import cm.smith.games.tracktion.screens.BaseScreen;
+import cm.smith.games.tracktion.screens.TitleScreen;
 
 /**
  * Created by anthony on 2016-11-10.
@@ -41,6 +42,7 @@ public class Hud extends Stack {
 
     // Generic HUD
     private UILabel time;
+    private LabelButton mainMenu;
     private UILabel mode;
     private Table modeTable;
 
@@ -72,12 +74,22 @@ public class Hud extends Stack {
 
     public void setupBaseHud() {
         time = UILabel.makeLabel(screen.game, "0:00", 75);
-
         Table timeTable = new Table();
         timeTable.setFillParent(true);
-
         timeTable.add(time).top();
         add(timeTable.top());
+
+        mainMenu = LabelButton.makeButton(screen.game, "main menu", 40, new LabelButton.Callback() {
+            @Override
+            public void onClick() {
+                screen.game.multiplayerServices.disconnect();
+                screen.game.setScreen(new TitleScreen(screen.game));
+            }
+        });
+        Table menuTable = new Table();
+        menuTable.setFillParent(true);
+        menuTable.add(mainMenu).top().left().padLeft(20 * BaseScreen.SCALE_X).padTop(15 * BaseScreen.SCALE_Y);
+        add(menuTable.top().left());
     }
 
     public void setupDriverHud() {
