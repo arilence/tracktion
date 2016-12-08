@@ -65,14 +65,14 @@ public class TestGameScreen extends BaseScreen {
 
         // Setup middleman that deals with google play services
         gameController = new GameController(role, vehicle, hud, gameBoard);
-        game.multiplayerServices.setGameManager(gameController);
-
-        game.multiplayerServices.findGame(role.getValue());
     }
 
     @Override
     public void show() {
         super.show();
+
+        game.multiplayerServices.setGameManager(gameController);
+        game.multiplayerServices.findGame(gameController.getRole().getValue());
     }
 
     @Override
@@ -150,5 +150,9 @@ public class TestGameScreen extends BaseScreen {
     private void updateGameOver(float delta) {
         gameController.updateGameOver(delta);
         hud.updateTimer(gameController.time);
+
+        if (gameController.time <= 0) {
+            this.game.setScreen(new GameOverScreen(this.game, this.gameController));
+        }
     }
 }

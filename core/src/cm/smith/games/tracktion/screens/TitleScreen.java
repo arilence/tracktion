@@ -68,12 +68,7 @@ public class TitleScreen extends BaseScreen {
         builderBtn = LabelButton.makeButton(this.game, "play as builder", new LabelButton.Callback() {
             @Override
             public void onClick() {
-                Hud hud = new Hud(TitleScreen.this, GameController.ROLE.DRIVER);
-                Vehicle vehicle = new Vehicle(TitleScreen.this.game, TitleScreen.this.physicsWorld, 1.2f, 2.4f,
-                        new Vector2(0, 0), (float) Math.PI * 0.5f, 60, 15, 25, 80);
-                GameBoard board = new GameBoard(TitleScreen.this);
-                //TitleScreen.this.transitionOutScreen(new TestGameScreen(TitleScreen.this.game, GameController.ROLE.BUILDER));
-                TitleScreen.this.transitionOutScreen(new GameOverScreen(TitleScreen.this.game, new GameController(GameController.ROLE.DRIVER, vehicle, hud, board)));
+                TitleScreen.this.transitionOutScreen(new TestGameScreen(TitleScreen.this.game, GameController.ROLE.BUILDER));
             }
         });
         builderBtn.setInvisible(true);

@@ -41,9 +41,9 @@ public class GameOverScreen extends BaseScreen {
         gameOverText = UILabel.makeLabel(this.game, "Nice Try!", 75);
         gameOverText.setInvisible(true);
 
-        timeLastedText = UILabel.makeLabel(this.game, Float.toString(this.controller.time), 75);
+        timeLastedText = UILabel.makeLabel(this.game, Float.toString(this.controller.finishedGameTime), 75);
         timeLastedText.setInvisible(true);
-        
+
         retryBtn = LabelButton.makeButton(this.game, "retry?", new LabelButton.Callback() {
             @Override
             public void onClick() {

@@ -58,6 +58,7 @@ public class GameController {
     private STATE currentState;
     private ROLE currentRole;
     private boolean firstTimeState;     // tracks the first time update of state
+    public boolean sentCrashMsg;
 
     private static float TIME_PREGAME = 5f;
     private static float TIME_PLAYING = 0f;
@@ -66,6 +67,7 @@ public class GameController {
 
     // Store all of the network shared entities in the controller
     public float time = TIME_PREGAME;    // time left for the current state
+    public float finishedGameTime = 0;
     public Vehicle vehicle;
     public Hud hud;
     public GameBoard gameBoard;
@@ -74,6 +76,7 @@ public class GameController {
         isGameRunning = false;
         currentState = STATE.PRE_GAME;
         firstTimeState = true;
+        sentCrashMsg = false;
 
         this.currentRole = role;
         this.vehicle = vehicle;
@@ -109,8 +112,15 @@ public class GameController {
             firstTimeState = false;
             hud.playText("GO");
         }
-        if (vehicle.isDead()) {
+        if (getRole() == ROLE.DRIVER && time > 10) {
+            finishedGameTime = time;
             currentState = STATE.DEAD;
+            firstTimeState = true;
+        }
+        if (vehicle.isDead()) {
+            finishedGameTime = time;
+            currentState = STATE.DEAD;
+            firstTimeState = true;
         }
     }
 
@@ -131,6 +141,9 @@ public class GameController {
         if (firstTimeState) {
             time = TIME_GAMEOVER;
             firstTimeState = false;
+        }
+        if (time <= 0) {
+            time = 0;
         }
     }
 

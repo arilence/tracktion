@@ -243,4 +243,6 @@ public class Vehicle extends Entity {
     public boolean isDead() {
         return this.isDead;
     }
+
+    public void setDead(boolean value) { this.isDead = value; }
 }

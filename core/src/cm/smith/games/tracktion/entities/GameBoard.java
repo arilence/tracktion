@@ -13,8 +13,8 @@ import cm.smith.games.tracktion.screens.BaseScreen;
 
 public class GameBoard extends TiledMap{
 
-    public static final int WORLD_WIDTH = 1000;
-    public static final int WORLD_HEIGHT = 1000;
+    public static final int WORLD_WIDTH = 100;
+    public static final int WORLD_HEIGHT = 100;
     public static final int WATER_TILE_WIDTH = 128;
     public static final int WATER_TILE_HEIGHT = 128;
     public static final int PLATFORM_TILE_WIDTH = 0;
