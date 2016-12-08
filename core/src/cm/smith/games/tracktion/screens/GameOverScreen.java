@@ -4,6 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Align;
 
+import java.text.DecimalFormat;
+
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
 import aurelienribon.tweenengine.TweenEquations;
@@ -20,28 +22,78 @@ import cm.smith.games.tracktion.ui.UILabel;
 public class GameOverScreen extends BaseScreen {
 
     MainGame game;
-    GameController controller;
+    GameController gameController;
+    DecimalFormat secondsFormatter;
 
     UILabel gameOverText;
     UILabel timeLastedText;
+    UILabel timeText;
     LabelButton retryBtn;
     LabelButton menuBtn;
 
-    public GameOverScreen(MainGame game, GameController controller) {
+    public GameOverScreen(MainGame game, GameController gameController) {
         super(game);
         this.game = game;
-        this.controller = controller;
+        this.gameController = gameController;
+        secondsFormatter = new DecimalFormat("00");
 
         setupUiElements();
         configureUiContainers();
         transitionIntoScreen();
     }
 
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+
+        if (gameController.isGameRunning) {
+            this.game.multiplayerServices.broadcastMessage();
+            updateTimer(gameController.time);
+
+            switch (gameController.getState()) {
+                case DEAD:
+                    updateDead(delta);
+                    break;
+
+                case GAME_OVER:
+                    updateGameOver(delta);
+                    break;
+            }
+        }
+
+        if (gameController.shouldDisconnect) {
+            this.game.setScreen(new TitleScreen(this.game));
+        }
+    }
+
+    private void updateDead(float delta) {
+        this.gameController.updateDead(delta);
+    }
+
+    private void updateGameOver(float delta) {
+        this.gameController.updateGameOver(delta);
+
+        if (gameController.time <= 0) {
+            gameController.shouldDisconnect = true;
+        }
+    }
+
+    private void updateTimer(float timeToShow) {
+        int minutes = (int)(timeToShow / 60);
+        int seconds = (int)(timeToShow % 60);
+        timeText.setText(minutes + ":" + secondsFormatter.format(seconds));
+    }
+
     private void setupUiElements() {
+        timeText = UILabel.makeLabel(this.game, "0:00", 75);
+        timeText.setInvisible(true);
+
         gameOverText = UILabel.makeLabel(this.game, "Nice Try!", 75);
         gameOverText.setInvisible(true);
 
-        timeLastedText = UILabel.makeLabel(this.game, Float.toString(this.controller.finishedGameTime), 75);
+        float time = this.gameController.finishedGameTime;
+        String timeString = this.gameController.hud.getTimer(time);
+        timeLastedText = UILabel.makeLabel(this.game, timeString, 75);
         timeLastedText.setInvisible(true);
 
         retryBtn = LabelButton.makeButton(this.game, "retry?", new LabelButton.Callback() {
@@ -62,6 +114,10 @@ public class GameOverScreen extends BaseScreen {
     }
 
     private void configureUiContainers() {
+        Table timeTable = new Table();
+        timeTable.setFillParent(true);
+        timeTable.add(timeText).top();
+
         Table infoTable = new Table();
         infoTable.padBottom(100f * BaseScreen.SCALE_Y)
                 .add(gameOverText)
@@ -100,6 +156,7 @@ public class GameOverScreen extends BaseScreen {
 
         // Piece it all together into awesomeness
         stack.add(horGroup);
+        stack.add(timeTable);
         this.uiStage.addActor(stack);
     }
 
@@ -107,6 +164,9 @@ public class GameOverScreen extends BaseScreen {
         // Initial intro tween animation
         Timeline.createSequence()
                 .beginParallel()
+                .push(Tween.from(timeText, Tweens.POSITION_Y, 2f) .targetRelative(-500) .ease(TweenEquations.easeInOutCubic))
+                .push(Tween.to(timeText, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack))
+
                 .push(Tween.from(gameOverText, Tweens.POSITION_X, 2f) .targetRelative(-500) .ease(TweenEquations.easeInOutCubic))
                 .push(Tween.to(gameOverText, Tweens.ALPHA, 2.5f) .target(1) .ease(TweenEquations.easeInBack))
 
@@ -125,6 +185,7 @@ public class GameOverScreen extends BaseScreen {
     public void transitionOutScreen(final BaseScreen screen) {
         Timeline tl = Timeline.createSequence()
                 .beginParallel()
+                .push(Tween.to(timeText, Tweens.ALPHA, 0.5f) .target(0) .ease(TweenEquations.easeOutCubic))
                 .push(Tween.to(gameOverText, Tweens.ALPHA, 0.5f) .target(0) .ease(TweenEquations.easeOutCubic))
                 .push(Tween.to(timeLastedText, Tweens.ALPHA, 0.5f) .target(0) .ease(TweenEquations.easeOutCubic))
                 .push(Tween.to(retryBtn, Tweens.ALPHA, 0.5f) .target(0) .ease(TweenEquations.easeOutCubic))

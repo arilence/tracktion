@@ -144,15 +144,15 @@ public class GameScreen extends BaseScreen {
 
     private void updateDead(float delta) {
         gameController.updateDead(delta);
-        hud.updateTimer(gameController.time);
-    }
-
-    private void updateGameOver(float delta) {
-        gameController.updateGameOver(delta);
-        hud.updateTimer(gameController.time);
+        hud.updateTimer(gameController.finishedGameTime);
 
         if (gameController.time <= 0) {
             this.game.setScreen(new GameOverScreen(this.game, this.gameController));
         }
+    }
+
+    private void updateGameOver(float delta) {
+        gameController.updateGameOver(delta);
+        hud.updateTimer(gameController.finishedGameTime);
     }
 }

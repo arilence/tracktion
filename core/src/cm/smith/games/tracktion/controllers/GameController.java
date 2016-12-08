@@ -36,7 +36,8 @@ public class GameController {
         PRE_GAME((byte)'P'),
         PLAYING((byte)'L'),
         DEAD((byte)'D'),
-        GAME_OVER((byte)'G');
+        GAME_OVER((byte)'G'),
+        DISCONNECT((byte)'T');
 
         private final byte state;
         STATE(byte state) { this.state = state; }
@@ -59,11 +60,13 @@ public class GameController {
     private ROLE currentRole;
     private boolean firstTimeState;     // tracks the first time update of state
     public boolean sentCrashMsg;
+    public boolean shouldDisconnect;
+    public boolean sentDisconnectMsg;
 
     private static float TIME_PREGAME = 5f;
     private static float TIME_PLAYING = 0f;
-    private static float TIME_DEAD = 5f;
-    private static float TIME_GAMEOVER = 30f;
+    private static float TIME_DEAD = 3f;
+    private static float TIME_GAMEOVER = 20f;
 
     // Store all of the network shared entities in the controller
     public float time = TIME_PREGAME;    // time left for the current state
@@ -77,6 +80,8 @@ public class GameController {
         currentState = STATE.PRE_GAME;
         firstTimeState = true;
         sentCrashMsg = false;
+        shouldDisconnect = false;
+        sentDisconnectMsg = false;
 
         this.currentRole = role;
         this.vehicle = vehicle;
@@ -133,6 +138,7 @@ public class GameController {
         }
         if (time <= 0) {
             currentState = STATE.GAME_OVER;
+            firstTimeState = true;
         }
     }
 

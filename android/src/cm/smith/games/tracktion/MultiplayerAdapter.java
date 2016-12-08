@@ -119,6 +119,14 @@ public class MultiplayerAdapter implements MultiplayerServices, RoomUpdateListen
                     break;
                 case GAME_OVER:
                     break;
+                case DISCONNECT:
+                    if (gameController.getRole() == GameController.ROLE.DRIVER && !gameController.sentDisconnectMsg) {
+                        Games.RealTimeMultiplayer.sendReliableMessage(gameHelper.getApiClient(), null, msgBuffer,
+                                roomId, p.getParticipantId());
+                        gameController.sentDisconnectMsg = true;
+                        gameHelper.disconnect();
+                    }
+                    break;
             }
         }
     }
@@ -157,6 +165,18 @@ public class MultiplayerAdapter implements MultiplayerServices, RoomUpdateListen
                     this.gameController.vehicle.setDead(true);
                     this.gameController.time = incomingTime;
                 }
+            }
+        }
+        else if (incomingPacket.state == GameController.STATE.GAME_OVER) {
+            if (incomingPacket.role == GameController.ROLE.DRIVER) {
+                if (this.gameController.time > incomingTime) {
+                    this.gameController.time = incomingTime;
+                }
+            }
+        }
+        else if (incomingPacket.state == GameController.STATE.DISCONNECT) {
+            if (incomingPacket.role == GameController.ROLE.DRIVER) {
+                this.gameHelper.disconnect();
             }
         }
     }

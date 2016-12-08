@@ -156,6 +156,12 @@ public class Hud extends Stack {
         time.setText(minutes + ":" + secondsFormatter.format(seconds));
     }
 
+    public String getTimer(float timeToShow) {
+        int minutes = (int)(timeToShow / 60);
+        int seconds = (int)(timeToShow % 60);
+        return minutes + ":" + secondsFormatter.format(seconds);
+    }
+
     public void update(float delta) {
 
     }
