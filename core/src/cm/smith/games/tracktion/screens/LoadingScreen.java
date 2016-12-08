@@ -52,6 +52,7 @@ public class LoadingScreen extends BaseScreen {
         game.assetManager.load("vehicle.png", Texture.class);
         game.assetManager.load("vehicle-explosion.png", Texture.class);
         game.assetManager.load("waterTile.png", Texture.class);
+        game.assetManager.load("trackTile.png", Texture.class);
     }
 
     private void loadFonts() {
@@ -61,25 +62,25 @@ public class LoadingScreen extends BaseScreen {
         game.assetManager.setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter parameter30 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        parameter30.fontFileName = "Roboto-Thin.ttf";
+        parameter30.fontFileName = "Roboto-Light.ttf";
         parameter30.fontParameters.size = (int)(30 * (BaseScreen.SCALE_X));
         parameter30.fontParameters.color = Color.WHITE;
         game.assetManager.load("font30.ttf", BitmapFont.class, parameter30);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter parameter40 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        parameter40.fontFileName = "Roboto-Thin.ttf";
+        parameter40.fontFileName = "Roboto-Light.ttf";
         parameter40.fontParameters.size = (int)(40 * (BaseScreen.SCALE_X));
         parameter40.fontParameters.color = Color.WHITE;
         game.assetManager.load("font40.ttf", BitmapFont.class, parameter40);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter parameter75 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        parameter75.fontFileName = "Roboto-Thin.ttf";
+        parameter75.fontFileName = "Roboto-Light.ttf";
         parameter75.fontParameters.size = (int)(75 * (BaseScreen.SCALE_X));
         parameter75.fontParameters.color = Color.WHITE;
         game.assetManager.load("font75.ttf", BitmapFont.class, parameter75);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter parameter120 = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        parameter120.fontFileName = "Roboto-Thin.ttf";
+        parameter120.fontFileName = "Roboto-Light.ttf";
         parameter120.fontParameters.size = (int)(120 * (BaseScreen.SCALE_X));
         parameter120.fontParameters.color = Color.WHITE;
         game.assetManager.load("font120.ttf", BitmapFont.class, parameter120);
