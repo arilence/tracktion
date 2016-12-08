@@ -37,7 +37,11 @@ public class Packet {
     public float vehicleVelX;
     public float vehicleVelY;
     public float vehicleHeading;
-    public boolean voteRetry;
+    public boolean voteRetry = false;
+
+    public boolean isNewTrack = false;
+    public float trackPosX;
+    public float trackPosY;
 
     public static byte[] float2ByteArray(float value) {
         return ByteBuffer.allocate(4).putFloat(value).array();
@@ -103,6 +107,13 @@ public class Packet {
             newPacket.voteRetry = (retry == 1);
         }
 
+        if (newPacket.role == GameController.ROLE.BUILDER) {
+            byte newPiece = splitByteArray(data, 13, 13)[0];
+            newPacket.isNewTrack = (newPiece == 1);
+            newPacket.trackPosX = byte2Float(splitByteArray(data, 14, 21));
+            newPacket.trackPosY = byte2Float(splitByteArray(data, 22, 29));
+        }
+
         return newPacket;
     }
 
@@ -123,6 +134,12 @@ public class Packet {
             byteMsg = insertByteArray(40, byteMsg, float2ByteArray(this.vehicleVelY));
             byteMsg = insertByteArray(48, byteMsg, float2ByteArray(this.vehicleHeading));
             byteMsg[56] = (byte)((voteRetry) ? 1 : 0);
+        }
+
+        if (role == GameController.ROLE.BUILDER) {
+            byteMsg[13] = (byte)((isNewTrack) ? 1 : 0);
+            byteMsg = insertByteArray(14, byteMsg, float2ByteArray(this.trackPosX));
+            byteMsg = insertByteArray(22, byteMsg, float2ByteArray(this.trackPosY));
         }
 
         return byteMsg;

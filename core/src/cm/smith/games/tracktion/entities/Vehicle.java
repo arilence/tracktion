@@ -219,7 +219,7 @@ public class Vehicle extends Entity {
     private void updateComponents() {
         transformComponent.pos.x = body.getPosition().x;
         transformComponent.pos.y = body.getPosition().y;
-        transformComponent.pos.z = 0;
+        transformComponent.pos.z = -10;
         transformComponent.rotation = body.getAngle();
     }
 

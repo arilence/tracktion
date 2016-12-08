@@ -4,6 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+
+import java.awt.Point;
+import java.awt.geom.Point2D;
+import java.util.Iterator;
 
 import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.controllers.GameController;
@@ -21,6 +26,7 @@ import cm.smith.games.tracktion.ui.Hud;
 public class GameScreen extends BaseScreen {
 
     public static final float LERP = 10f;
+    private Vector3 touchPoint;
     private GameController gameController;
     private Vehicle vehicle;
     private Hud hud;
@@ -29,6 +35,8 @@ public class GameScreen extends BaseScreen {
 
     public GameScreen(MainGame game, GameController.ROLE role) {
         super(game);
+
+        touchPoint = new Vector3();
 
         // Add systems to ashley ECS engine
         this.engine.addSystem(new RenderingSystem(this.game.gameBatch));
@@ -52,11 +60,9 @@ public class GameScreen extends BaseScreen {
         // Do some track stuff
         TrackSegment track01 = new TrackSegment(this.game, vehicleX, vehicleY);
         TrackSegment track02 = new TrackSegment(this.game, vehicleX + (track01.texture.getWidth() / BaseScreen.PIXELS_PER_METER), vehicleY);
-        TrackSegment track03 = new TrackSegment(this.game, vehicleX + (track01.texture.getWidth() * 2), vehicleY);
 
         this.engine.addEntity(track01);
         this.engine.addEntity(track02);
-        this.engine.addEntity(track03);
         this.engine.addEntity(vehicle);
     }
 
@@ -148,6 +154,20 @@ public class GameScreen extends BaseScreen {
             } else {
                 vehicle.setAccelerate(Vehicle.ACC_NONE);
             }
+
+            while (!gameController.segments.isEmpty()) {
+                Vector2 point = gameController.segments.pop();
+                this.engine.addEntity(new TrackSegment(this.game, point.x, point.y));
+            }
+        }
+
+        if(gameController.getRole() == GameController.ROLE.BUILDER && Gdx.input.justTouched())
+        {
+            this.gameCamera.unproject(touchPoint.set(Gdx.input.getX(),Gdx.input.getY(), 0));
+            TrackSegment track = new TrackSegment(this.game, touchPoint.x, touchPoint.y);
+            this.engine.addEntity(track);
+
+            this.game.multiplayerServices.builderMessage(touchPoint.x, touchPoint.y);
         }
 
         vehicle.update(delta);

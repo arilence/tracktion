@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cm.smith.games.tracktion.controllers.GameController;
+import cm.smith.games.tracktion.entities.TrackSegment;
 import cm.smith.games.tracktion.entities.Vehicle;
 
 /**
@@ -90,12 +91,21 @@ public class MultiplayerAdapter implements MultiplayerServices, RoomUpdateListen
         sendingPacket.time = gameController.time;
         sendingPacket.state = gameController.getState();
         sendingPacket.role = gameController.getRole();
-        sendingPacket.isAccelerating = gameController.hud.isAccelerateDown;
-        sendingPacket.isTurningLeft = gameController.hud.isLeftDown;
-        sendingPacket.isTurningRight = gameController.hud.isRightDown;
-        sendingPacket.vehiclePosX = gameController.vehicle.transformComponent.pos.x;
-        sendingPacket.vehiclePosY = gameController.vehicle.transformComponent.pos.y;
-        sendingPacket.vehicleHeading = gameController.vehicle.body.getAngle();
+
+        if (gameController.getRole() == GameController.ROLE.DRIVER) {
+            sendingPacket.isAccelerating = gameController.hud.isAccelerateDown;
+            sendingPacket.isTurningLeft = gameController.hud.isLeftDown;
+            sendingPacket.isTurningRight = gameController.hud.isRightDown;
+            sendingPacket.vehiclePosX = gameController.vehicle.transformComponent.pos.x;
+            sendingPacket.vehiclePosY = gameController.vehicle.transformComponent.pos.y;
+            sendingPacket.vehicleHeading = gameController.vehicle.body.getAngle();
+        }
+
+        if (gameController.getRole() == GameController.ROLE.BUILDER) {
+            sendingPacket.isNewTrack = false;
+            sendingPacket.trackPosX = 0f;
+            sendingPacket.trackPosY = 0f;
+        }
 
         if (gameController.getRole() == GameController.ROLE.DRIVER) {
             sendingPacket.voteRetry = gameController.restartDriver;
@@ -143,6 +153,30 @@ public class MultiplayerAdapter implements MultiplayerServices, RoomUpdateListen
     }
 
     @Override
+    public void builderMessage(float x, float y) {
+        Packet sendingPacket = new Packet();
+        sendingPacket.time = gameController.time;
+        sendingPacket.state = gameController.getState();
+        sendingPacket.role = gameController.getRole();
+        sendingPacket.isNewTrack = true;
+        sendingPacket.trackPosX = x;
+        sendingPacket.trackPosY = y;
+
+        msgBuffer = sendingPacket.toBytes();
+
+        // Send to every other participant.
+        for (Participant p : participants) {
+            if (p.getParticipantId().equals(myId))
+                continue;
+            if (p.getStatus() != Participant.STATUS_JOINED)
+                continue;
+
+            Games.RealTimeMultiplayer.sendReliableMessage(gameHelper.getApiClient(), null, msgBuffer,
+                    roomId, p.getParticipantId());
+        }
+    }
+
+    @Override
     public void onRealTimeMessageReceived(RealTimeMessage realTimeMessage) {
 //        Gdx.app.log("Multiplayer", "onRealTimeMessageReceived");
 
@@ -168,6 +202,9 @@ public class MultiplayerAdapter implements MultiplayerServices, RoomUpdateListen
 
                 this.gameController.vehicle.body.setTransform(incomingPacket.vehiclePosX, incomingPacket.vehiclePosY, incomingPacket.vehicleHeading);
                 this.gameController.vehicle.body.setLinearVelocity(incomingPacket.vehicleVelX, incomingPacket.vehicleVelY);
+            }
+            if (incomingPacket.role == GameController.ROLE.BUILDER && incomingPacket.isNewTrack) {
+                this.gameController.addSegment(incomingPacket.trackPosX, incomingPacket.trackPosY);
             }
         }
         else if (incomingPacket.state == GameController.STATE.DEAD) {

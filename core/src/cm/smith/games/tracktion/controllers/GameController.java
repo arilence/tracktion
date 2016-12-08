@@ -1,11 +1,16 @@
 package cm.smith.games.tracktion.controllers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Queue;
 
+import java.awt.Point;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
 import cm.smith.games.tracktion.entities.GameBoard;
+import cm.smith.games.tracktion.entities.TrackSegment;
 import cm.smith.games.tracktion.entities.Vehicle;
 import cm.smith.games.tracktion.ui.Hud;
 
@@ -80,8 +85,10 @@ public class GameController {
     public Vehicle vehicle;
     public Hud hud;
     public GameBoard gameBoard;
+    public Stack<Vector2> segments;
 
     public GameController(ROLE role, Vehicle vehicle, Hud hud, GameBoard gameBoard) {
+        segments = new Stack<Vector2>();
         isGameRunning = false;
         currentState = STATE.PRE_GAME;
         firstTimeState = true;
@@ -105,6 +112,11 @@ public class GameController {
 
     public STATE getState() {
         return this.currentState;
+    }
+
+    public void addSegment(float x, float y) {
+        Vector2 point = new Vector2(x, y);
+        this.segments.push(point);
     }
 
     public void updatePreGame(float delta) {

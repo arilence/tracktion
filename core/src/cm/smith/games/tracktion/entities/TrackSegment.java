@@ -30,7 +30,7 @@ public class TrackSegment extends Entity {
         transformComponent = new TransformComponent();
         transformComponent.pos.x = x;
         transformComponent.pos.y = y;
-        transformComponent.pos.z = 0;
+        transformComponent.pos.z = -1;
 
         add(textureComponent);
         add(transformComponent);
