@@ -156,7 +156,7 @@ public class GameOverScreen extends BaseScreen {
 
         // Piece it all together into awesomeness
         stack.add(horGroup);
-        stack.add(timeTable);
+        stack.add(timeTable.top());
         this.uiStage.addActor(stack);
     }
 
