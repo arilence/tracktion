@@ -64,6 +64,11 @@ public class GameScreen extends BaseScreen {
         this.engine.addEntity(track01);
         this.engine.addEntity(track02);
         this.engine.addEntity(vehicle);
+
+        float newX = vehicle.transformComponent.pos.x;
+        float newY = vehicle.transformComponent.pos.y;
+        this.gameCamera.position.x = newX;
+        this.gameCamera.position.y = newY;
     }
 
     @Override
