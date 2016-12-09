@@ -139,9 +139,9 @@ public class GameController {
             firstTimeState = false;
             hud.playText("GO");
         }
-        if (getRole() == ROLE.DRIVER && vehicle.getSpeedKMH() <= 20 && time > 2) {
-            vehicle.setDead(true);
-        }
+//        if (getRole() == ROLE.DRIVER && vehicle.getSpeedKMH() <= 20 && time > 2) {
+//            vehicle.setDead(true);
+//        }
         if (vehicle.isDead()) {
             finishedGameTime = time;
             currentState = STATE.DEAD;

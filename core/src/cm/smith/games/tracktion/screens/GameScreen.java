@@ -16,6 +16,7 @@ import cm.smith.games.tracktion.entities.GameBoard;
 import cm.smith.games.tracktion.entities.TrackSegment;
 import cm.smith.games.tracktion.entities.Vehicle;
 import cm.smith.games.tracktion.systems.AnimationSystem;
+import cm.smith.games.tracktion.systems.CollisionSystem;
 import cm.smith.games.tracktion.systems.RenderingSystem;
 import cm.smith.games.tracktion.ui.Hud;
 
@@ -32,15 +33,26 @@ public class GameScreen extends BaseScreen {
     private Hud hud;
     private GameBoard gameBoard;
     private TiledMapRenderer gameBoardRenderer;
+    private CollisionSystem.CollisionListener collisionListener;
 
     public GameScreen(MainGame game, GameController.ROLE role) {
         super(game);
 
         touchPoint = new Vector3();
 
+        collisionListener = new CollisionSystem.CollisionListener() {
+            @Override
+            public void trackCollision(boolean isOutside) {
+                if (isOutside) {
+                    vehicle.setDead(true);
+                }
+            }
+        };
+
         // Add systems to ashley ECS engine
         this.engine.addSystem(new RenderingSystem(this.game.gameBatch));
         this.engine.addSystem(new AnimationSystem());
+        this.engine.addSystem(new CollisionSystem(collisionListener));
 
         // Setup HUD
         hud = new Hud(this, role);

@@ -7,11 +7,14 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.compression.lzma.Base;
 
@@ -20,9 +23,11 @@ import java.util.List;
 
 import cm.smith.games.tracktion.MainGame;
 import cm.smith.games.tracktion.components.AnimationComponent;
+import cm.smith.games.tracktion.components.BoundsComponent;
 import cm.smith.games.tracktion.components.StateComponent;
 import cm.smith.games.tracktion.components.TextureComponent;
 import cm.smith.games.tracktion.components.TransformComponent;
+import cm.smith.games.tracktion.components.VehicleComponent;
 import cm.smith.games.tracktion.screens.BaseScreen;
 
 /**
@@ -42,6 +47,9 @@ public class Vehicle extends Entity {
     private boolean isAccelerating;
     private boolean isDead;
 
+    public static final int STATE_NORMAL = 0;
+    public static final int STATE_DEAD = 1;
+
     public static final int STEER_NONE=0;
     public static final int STEER_LEFT=1;
     public static final int STEER_RIGHT=2;
@@ -57,6 +65,7 @@ public class Vehicle extends Entity {
     public TransformComponent transformComponent;
     public StateComponent stateComponent;
     public AnimationComponent animationComponent;
+    public BoundsComponent boundsComponent;
 
     public Vehicle(MainGame game, World world, float width, float length, Vector2 position,
                    float angle, float power, float minSteerAngle, float maxSteerAngle, float maxSpeed) {
@@ -69,8 +78,12 @@ public class Vehicle extends Entity {
         textureComponent = new TextureComponent();
         textureComponent.region = textureRegion;
         transformComponent = new TransformComponent();
+        boundsComponent = new BoundsComponent();
+        boundsComponent.bounds = new Polygon();
         add(textureComponent);
         add(transformComponent);
+        add(boundsComponent);
+        add(new VehicleComponent());
 
         Texture explosionTexture = game.assetManager.get("vehicle-explosion.png", Texture.class);
         Animation explodeAnim = new Animation(0.1f,
@@ -97,7 +110,7 @@ public class Vehicle extends Entity {
         add(animationComponent);
 
         stateComponent = new StateComponent();
-        stateComponent.set(0);
+        stateComponent.set(Vehicle.STATE_NORMAL);
         add(stateComponent);
 
         this.isAccelerating = false;
@@ -221,6 +234,11 @@ public class Vehicle extends Entity {
         transformComponent.pos.y = body.getPosition().y;
         transformComponent.pos.z = -10;
         transformComponent.rotation = body.getAngle();
+
+        boundsComponent.bounds = new Polygon(new float[]{0,0,width,0,width,length,0,length});
+        boundsComponent.bounds.setOrigin(width/2, length/2);
+        boundsComponent.bounds.rotate(angle);
+        boundsComponent.bounds.setPosition(transformComponent.pos.x, transformComponent.pos.y);
     }
 
     public List<Wheel> getPoweredWheels () {
@@ -280,7 +298,7 @@ public class Vehicle extends Entity {
     public void setDead(boolean value) {
         this.isDead = value;
         if (value) {
-            this.stateComponent.set(1);
+            this.stateComponent.set(Vehicle.STATE_DEAD);
         }
     }
 }
